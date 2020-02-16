@@ -5,3 +5,4 @@ SECRET_KEY = 'qkngi6q!7y74@lht)x2ivvzcd%^s@g0@_j$^78%$#nft828#dj'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+
