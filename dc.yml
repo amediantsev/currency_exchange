@@ -19,6 +19,7 @@ services:
   postgres:
     image: postgres:11.3
     restart: always
+    container_name: postgres
     ports:
       - "5432:5432"
     environment:
@@ -27,6 +28,22 @@ services:
       - POSTGRES_DB=currency_exchange
     volumes:
       - pgdata:/var/lib/postgresql/data
+
+  celery:
+    image: celery:4.0.2
+    restart: always
+    container_name: celery
+
+  web:
+    build: .
+    command: python src/manage.py runserver 0.0.0.0:8000
+    container_name: web
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
 
 volumes:
   pgdata:
