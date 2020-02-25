@@ -1,0 +1,12 @@
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+
+	server_name www.currency-exchange.com 127.0.0.1;
+
+    location / {
+        include proxy_params;
+        proxy_pass http://backend:8000;
+    }
+
+}
