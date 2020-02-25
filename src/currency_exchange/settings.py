@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from celery.schedules import crontab
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -23,7 +25,7 @@ SECRET_KEY = 'qkngi6q!7y74@lht)x2ivvzcd%^s@g0@_j$^78%$#nft828#dj'
 DEBUG = False
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*', '0.0.0.0', '127.0.0.1',]
 
 
 INSTALLED_APPS = [
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     'django_extensions',
 
     'account',
+    'currency',
 ]
 
 MIDDLEWARE = [
@@ -80,11 +83,11 @@ WSGI_APPLICATION = 'currency_exchange.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'currency_exchange',
-        'USER' : 'ce',
-        'PASSWORD' : '123456qwerty',
-        'HOST' : 'postgres',
-        'PORT' : '5432',
+        'NAME': os.environ['POSTGRES_DB'],
+        'USER' : os.environ['POSTGRES_USER'],
+        'PASSWORD' : os.environ['POSTGRES_PASSWORD'],
+        'HOST' : os.environ['POSTGRES_HOST'],
+        'PORT' : os.environ['POSTGRES_PORT'],
     }
 }
 
@@ -111,9 +114,18 @@ AUTH_PASSWORD_VALIDATORS = [
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': '127.0.0.1:11211',
+        'LOCATION': f'{os.environ["MEMCACHED_HOST"]}:{os.environ["MEMCACHED_PORT"]}',
     }
 }
+
+
+CELERY_BROKER_URL = 'amqp://{}:{}@{}:{}'.format(
+    os.environ['RABBITMQ_DEFAULT_USER'],
+    os.environ['RABBITMQ_DEFAULT_PASS'],
+    os.environ['RABBITMQ_DEFAULT_HOST'],
+    os.environ['RABBITMQ_DEFAULT_PORT'],
+)
+
 
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
@@ -143,6 +155,14 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'account.User'
+
+
+CELERY_BEAT_SCHEDULE = {
+    'parse-rates': {
+        'task': 'currency.tasks.parse_rates',
+        'schedule': crontab(minute='*/1')
+    }
+}
 
 try:
     from currency_exchange.settings_local import * #noqa
