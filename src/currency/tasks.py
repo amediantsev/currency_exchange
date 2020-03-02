@@ -59,6 +59,7 @@ def _vkurse():
                 currency = mch.CURR_USD
             else:
                 currency = mch.CURR_EUR
+
             rate_kwargs = {
                 'currency': currency,
                 'buy': Decimal(r_json[curr]['buy']),
