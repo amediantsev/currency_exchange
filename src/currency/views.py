@@ -1,3 +1,10 @@
-from django.shortcuts import render
+from django.views.generic import ListView
 
-# Create your views here.
+from currency.models import Rate
+
+class LastRates(ListView):
+    template_name = 'last-rates.html'
+    model = Rate
+    queryset = Rate.objects.all()
+    ordering = '-created'
+    paginate_by = 20

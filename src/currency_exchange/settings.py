@@ -70,8 +70,8 @@ TEMPLATES = [
 ]
 
 
-LOGIN_REDIRECT_URL = reverse_lazy('home')
-LOGOUT_REDIRECT_URL = reverse_lazy('home')
+LOGIN_REDIRECT_URL = reverse_lazy('index')
+LOGOUT_REDIRECT_URL = reverse_lazy('index')
 
 WSGI_APPLICATION = 'currency_exchange.wsgi.application'
 
@@ -125,9 +125,7 @@ CELERY_BROKER_URL = 'amqp://{}:{}@{}:{}'.format(
     os.environ['RABBITMQ_DEFAULT_PORT'],
 )
 
-
-
-EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
@@ -157,11 +155,10 @@ STATICFILES_DIRS = [
 
 AUTH_USER_MODEL = 'account.User'
 
-
 CELERY_BEAT_SCHEDULE = {
     'parse-rates': {
         'task': 'currency.tasks.parse_rates',
-        'schedule': crontab(minute='*/10')
+        'schedule': crontab(minute='*/1')
     }
 }
 

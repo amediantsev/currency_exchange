@@ -10,7 +10,10 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>{% block title %}{% endblock title %}</title>
+  <title>
+    {% block title %}
+    {% endblock title %}
+  </title>
 
   <!-- Bootstrap core CSS -->
   <link href="{% static 'ln/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -39,29 +42,27 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link js-scroll-trigger" href="#about">About</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link js-scroll-trigger" href="#experience">Experience</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link js-scroll-trigger" href="#education">Education</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link js-scroll-trigger" href="#skills">Skills</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link js-scroll-trigger" href="#interests">Interests</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link js-scroll-trigger" href="#awards">Awards</a>
-        </li>
-<!--        <li class="nav-item">-->
-<!--          <a class="nav-link" href="{% url 'account:my-profile' 1 %}">My profile</a>-->
-<!--        </li>-->
+
+        {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'account:my-profile' user.id %}">My profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Log in</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'account:signup' %}">Sign up</a>
+          </li>
+        {% endif %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'account:contact-us' %}">Contact Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'currency:last-rates' %}">Last rates</a>
         </li>
       </ul>
     </div>
