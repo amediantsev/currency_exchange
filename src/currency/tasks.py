@@ -8,6 +8,10 @@ from currency.models import Rate
 from currency import model_choices as mch
 
 
+def save_rate(last_rate, new_rate):
+    if last_rate is None or (new_rate.buy != last_rate.buy or new_rate.sale != last_rate.sale):
+        new_rate.save()
+
 def _privat():
     url = 'https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5'
     response = requests.get(url)
@@ -25,9 +29,9 @@ def _privat():
 
             new_rate = Rate(**rate_kwargs)
             last_rate = Rate.objects.filter(currency=currency, source=mch.SR_PRIVAT).last()
+            save_rate(last_rate, new_rate)
 
-            if last_rate is None or (new_rate.buy != last_rate.buy or new_rate.sale != last_rate.sale):
-                new_rate.save()
+            #TODO separate save_function
 
 def _mono():
     url = 'https://api.monobank.ua/bank/currency'
@@ -40,13 +44,12 @@ def _mono():
             rate_kwargs = {
                 'currency': currency,
                 'buy': Decimal(str(round(float(rate['rateBuy']), 2))),
-                'sale': Decimal(str(round(float(rate['rateBuy']), 2))),
+                'sale': Decimal(str(round(float(rate['rateSell']), 2))),
                 'source': mch.SR_MONO
             }
             new_rate = Rate(**rate_kwargs)
             last_rate = Rate.objects.filter(currency=currency, source=mch.SR_MONO).last()
-            if last_rate is None or (new_rate.buy != last_rate.buy or new_rate.sale != last_rate.sale):
-                new_rate.save()
+            save_rate(last_rate, new_rate)
 
 def _vkurse():
     url = 'http://vkurse.dp.ua/course.json'
@@ -68,8 +71,7 @@ def _vkurse():
             }
             new_rate = Rate(**rate_kwargs)
             last_rate = Rate.objects.filter(currency=currency, source=mch.SR_VKURSE).last()
-            if last_rate is None or (new_rate.buy != last_rate.buy or new_rate.sale != last_rate.sale):
-                new_rate.save()
+            save_rate(last_rate, new_rate)
 
 def _otp():
     url = 'https://www.otpbank.com.ua/'
@@ -95,8 +97,7 @@ def _otp():
             }
             new_rate = Rate(**rate_kwargs)
             last_rate = Rate.objects.filter(currency=currency, source=mch.SR_OTP).last()
-            if last_rate is None or (new_rate.buy != last_rate.buy or new_rate.sale != last_rate.sale):
-                new_rate.save()
+            save_rate(last_rate, new_rate)
 
 def _pumb():
     url = 'https://www.pumb.ua/'
@@ -130,8 +131,7 @@ def _pumb():
         }
         new_rate = Rate(**rate_kwargs)
         last_rate = Rate.objects.filter(currency=currency, source=mch.SR_PUMB).last()
-        if last_rate is None or (new_rate.buy != last_rate.buy or new_rate.sale != last_rate.sale):
-            new_rate.save()
+        save_rate(last_rate, new_rate)
 
 def _oshchad():
     url = 'https://www.oschadbank.ua/ua'
@@ -156,8 +156,7 @@ def _oshchad():
         }
         new_rate = Rate(**rate_kwargs)
         last_rate = Rate.objects.filter(currency=currency, source=mch.SR_OSHCHAD).last()
-        if last_rate is None or (new_rate.buy != last_rate.buy or new_rate.sale != last_rate.sale):
-            new_rate.save()
+        save_rate(last_rate, new_rate)
 
 
 @shared_task(bind=True)
