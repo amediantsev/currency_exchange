@@ -5,9 +5,13 @@ My profile
 {% endblock title %}
 
 {% block content %}
+{% if request.user.id == user.id %}
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Submit</button>
 </form>
+{% else %}
+<p>Sorry, it's not your profile, you can't edit it</p>
+{% endif %}
 {% endblock content %}

@@ -19,17 +19,6 @@ class MyProfile(generic.UpdateView):
     fields = ('email', )
     success_url = reverse_lazy('index')
 
-    # def get_context_data(self, *args,  **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['pk'] = self.request.user.id
-    #     context['current_user'] = int(self.request.path[2])
-    #     return context
-
-    # def form_valid(self, form):
-    #     self.object = form.save()
-    #     response = super().form_valid(form)
-    #     return response
-
 
 class ContactUs(generic.CreateView):
     template_name = 'my_profile.html'
@@ -41,12 +30,9 @@ class ContactUs(generic.CreateView):
 
 
     def form_valid(self, form):
-        response = super().form_valid(form)
-
-
         subject = self.object.title
         message = self.object.body
         email_from = self.object.email
         recipient_list = [settings.EMAIL_HOST_USER]
         send_email_async.delay(subject=subject, message=message, email_from=email_from, recipient_list=recipient_list)
-        return response
+        return super().form_valid(form)
