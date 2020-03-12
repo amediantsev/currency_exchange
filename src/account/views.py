@@ -22,7 +22,7 @@ class MyProfile(generic.UpdateView):
     # def get_context_data(self, *args,  **kwargs):
     #     context = super().get_context_data(**kwargs)
     #     context['pk'] = self.request.user.id
-    #     context['current_user'] = int(self.request.path[-2])
+    #     context['current_user'] = int(self.request.path[2])
     #     return context
 
     # def form_valid(self, form):
