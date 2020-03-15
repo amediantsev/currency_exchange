@@ -1,11 +1,10 @@
 from django.urls import reverse_lazy
 from django.views import generic
-from django.views.generic.detail import SingleObjectMixin
 
 from account.forms import UserCreationFormReboot
 from account.models import User , Contact
 from account.tasks import send_email_async
-from currency_exchange import settings_local, settings
+from currency_exchange import settings
 
 
 class SignUp(generic.CreateView):
@@ -18,6 +17,10 @@ class MyProfile(generic.UpdateView):
     queryset = User.objects.filter(is_active=True)
     fields = ('email', )
     success_url = reverse_lazy('index')
+
+    # def get_queryset(self):
+    #     queryset = super().get_queryset()
+    #     return queryset.filter(id=self.request.user.id)
 
 
 class ContactUs(generic.CreateView):
