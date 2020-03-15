@@ -23,3 +23,5 @@ class Contact(models.Model):
     title = models.CharField(max_length=256)
     body = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
+
+import account.signals
