@@ -20,6 +20,8 @@ ipython-genutils==0.2.0
 jedi==0.16.0
 kombu==4.6.7
 mccabe==0.6.1
+numpy==1.18.1
+pandas==1.0.2
 parso==0.6.1
 pexpect==4.8.0
 pickleshare==0.7.5

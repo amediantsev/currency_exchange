@@ -1,8 +1,10 @@
 from decimal import Decimal
 import requests
 
+from django.utils import timezone
 from celery import shared_task
 from bs4 import BeautifulSoup
+from pandas import date_range
 
 from currency.models import Rate
 from currency import model_choices as mch
@@ -167,3 +169,30 @@ def parse_rates(self):
     _otp()
     _pumb()
     _oshchad()
+
+
+@shared_task(bind=True)
+def parse_archive_rates(self):
+    end_date = timezone.now().date()
+    five_years = timezone.timedelta(days=(365*5 + 2)) # 2016 and 2020 - leap years
+    daterange = date_range(end_date - five_years, end_date)
+    for date in daterange:
+        response = requests.get(f'https://api.privatbank.ua/p24api/exchange_rates?json&date={date.day}.{date.month}.{date.year}')
+        r_json = response.json()
+        for rate in r_json['exchangeRate']:
+            if rate['currency'] == 'USD':
+                Rate.objects.create(
+                    created=str(date.date()),
+                    currency=mch.CURR_USD,
+                    buy = rate['purchaseRate'],
+                    sale = rate['saleRate'],
+                    source = mch.SR_PRIVAT
+                )
+            if rate['currency'] == 'EUR':
+                Rate.objects.create(
+                    created=str(date.date()),
+                    currency=mch.CURR_EUR,
+                    buy=rate['purchaseRate'],
+                    sale=rate['saleRate'],
+                    source=mch.SR_PRIVAT
+                )
