@@ -176,20 +176,21 @@ def parse_archive_rates(self):
     for date in daterange:
         response = requests.get(f'https://api.privatbank.ua/p24api/exchange_rates?json&date={date.day}.{date.month}.{date.year}')
         r_json = response.json()
-        for rate in r_json['exchangeRate']:
-            if rate['currency'] == 'USD':
-                Rate.objects.create(
-                    created=str(date.date()),
-                    currency=mch.CURR_USD,
-                    buy = rate['purchaseRate'],
-                    sale = rate['saleRate'],
-                    source = mch.SR_PRIVAT
-                )
-            if rate['currency'] == 'EUR':
-                Rate.objects.create(
-                    created=str(date.date()),
-                    currency=mch.CURR_EUR,
-                    buy=rate['purchaseRate'],
-                    sale=rate['saleRate'],
-                    source=mch.SR_PRIVAT
-                )
+        if Rate.objects.filter(created=date) == 0:
+            for rate in r_json['exchangeRate']:
+                if rate['currency'] == 'USD':
+                    Rate.objects.create(
+                        created=str(date.date()),
+                        currency=mch.CURR_USD,
+                        buy = rate['purchaseRate'],
+                        sale = rate['saleRate'],
+                        source = mch.SR_PRIVAT
+                    )
+                if rate['currency'] == 'EUR':
+                    Rate.objects.create(
+                        created=str(date.date()),
+                        currency=mch.CURR_EUR,
+                        buy=rate['purchaseRate'],
+                        sale=rate['saleRate'],
+                        source=mch.SR_PRIVAT
+                    )
