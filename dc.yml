@@ -58,7 +58,7 @@ services:
 
   celerybeat:
     build: .
-    command: celery -A currency_exchange beat -l info --workdir=/srv/project/src
+    command: celery -A currency_exchange beat -l info --workdir=/srv/project/src --pidfile=/srv/project/src/celerybeat.pid
     container_name: celerybeat
     restart: always
     env_file:

@@ -149,7 +149,7 @@ AUTH_USER_MODEL = 'account.User'
 CELERY_BEAT_SCHEDULE = {
     'parse-rates': {
         'task': 'currency.tasks.parse_rates',
-        'schedule': crontab(minute='*/10')
+        'schedule': crontab(minute='*/1')
     }
 }
 
