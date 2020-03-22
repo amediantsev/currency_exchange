@@ -33,8 +33,6 @@ def _privat():
             last_rate = Rate.objects.filter(currency=currency, source=mch.SR_PRIVAT).last()
             save_rate(last_rate, new_rate)
 
-            #TODO separate save_function
-
 def _mono():
     url = 'https://api.monobank.ua/bank/currency'
     response = requests.get(url)
@@ -45,8 +43,8 @@ def _mono():
             currency = mch.CURR_USD if rate['currencyCodeA'] == 840 else mch.CURR_EUR
             rate_kwargs = {
                 'currency': currency,
-                'buy': Decimal(str(round(float(rate['rateBuy']), 2))),
-                'sale': Decimal(str(round(float(rate['rateSell']), 2))),
+                'buy': Decimal(str(round(rate['rateBuy'], 2))),
+                'sale': Decimal(str(round(rate['rateSell'], 2))),
                 'source': mch.SR_MONO
             }
             new_rate = Rate(**rate_kwargs)
@@ -65,12 +63,16 @@ def _vkurse():
             else:
                 currency = mch.CURR_EUR
 
+            buy = r_json[curr]['buy'].replace(',', '.')
+            sale = r_json[curr]['sale'].replace(',', '.')
+
             rate_kwargs = {
                 'currency': currency,
-                'buy': Decimal(r_json[curr]['buy']),
-                'sale': Decimal(r_json[curr]['sale']),
+                'buy': Decimal(buy),
+                'sale': Decimal(sale),
                 'source': mch.SR_VKURSE
             }
+
             new_rate = Rate(**rate_kwargs)
             last_rate = Rate.objects.filter(currency=currency, source=mch.SR_VKURSE).last()
             save_rate(last_rate, new_rate)
@@ -107,23 +109,17 @@ def _pumb():
     soup = BeautifulSoup(response.content, 'html.parser')
     currency_block = soup.find('div', class_='exchange-rate')
     currency_block = currency_block.select("table tr")
-    currencies_blocks = [currency_block[0], currency_block[1]]
-    for block in currencies_blocks:
-        if 'USD' in block.text:
+    target_blocks = [currency_block[1], currency_block[2]]
+
+    for block in target_blocks:
+        if block.text.strip().split('\n')[0] == 'USD':
             currency = mch.CURR_USD
         else:
             currency = mch.CURR_EUR
 
-        a = 0
-        buy = ''
-        sale = ''
-        for block in currencies_blocks:                         # походу это уродливый код и вообще костыль
-            for i in block:                                     # потом постараюсь оптимизировать
-                if a == 10:                                     # у этих тегов просто нету классов,
-                    buy = i.text                                # они между собой отличаются только записями
-                elif a == 12:
-                    sale = i.text
-                a += 1
+        block = block.find_all('td')
+        sale = block[1].text
+        buy = block[2].text
 
         rate_kwargs = {
             'currency': currency,
@@ -131,6 +127,7 @@ def _pumb():
             'sale': Decimal(sale),
             'source': mch.SR_PUMB
         }
+
         new_rate = Rate(**rate_kwargs)
         last_rate = Rate.objects.filter(currency=currency, source=mch.SR_PUMB).last()
         save_rate(last_rate, new_rate)
