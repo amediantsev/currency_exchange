@@ -24,8 +24,8 @@ def _privat():
             currency = mch.CURR_USD if rate['ccy'] == 'USD' else mch.CURR_EUR
             rate_kwargs = {
                 'currency': currency,
-                'buy': Decimal(rate['buy']),
-                'sale': Decimal(rate['sale']),
+                'buy': Decimal(rate['buy'][:5]),
+                'sale': Decimal(rate['sale'][:5]),
                 'source': mch.SR_PRIVAT
             }
 

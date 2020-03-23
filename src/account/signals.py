@@ -8,5 +8,8 @@ from currency_exchange.settings import MEDIA_ROOT
 
 @receiver(pre_save, sender=User)
 def pre_save_User(sender, instance, **kwargs):
-    if instance.avatar != None:
-        shutil.rmtree(os.path.join(MEDIA_ROOT, 'avatar', str(instance.id)))
+    try:
+        if instance.avatar != None:
+            shutil.rmtree(os.path.join(MEDIA_ROOT, 'avatar', str(instance.id)))
+    except:
+        pass
