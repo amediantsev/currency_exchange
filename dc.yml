@@ -1,0 +1,85 @@
+version: "3"
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3.8-rc-management
+    container_name: rabbitmq
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "15672:15672"
+
+  memcached:
+    image: memcached:latest
+    container_name: memcached
+    restart: always
+
+  postgres:
+    image: postgres:11.3
+    restart: always
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build: .
+    command: python src/manage.py runserver 0:8000
+    container_name: backend
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./:/srv/project
+    ports:
+      - "8000:8000"
+    depends_on:
+      - rabbitmq
+      - postgres
+      - memcached
+
+  celery:
+    build: .
+    command: /bin/bash ./commands/start_celery.sh
+    container_name: celery
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./:/srv/project
+    depends_on:
+      - rabbitmq
+      - postgres
+
+  celerybeat:
+    build: .
+    command: celery -A currency_exchange beat -l info --workdir=/srv/project/src
+    container_name: celerybeat
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./:/srv/project
+    depends_on:
+      - rabbitmq
+      - postgres
+
+  nginx:
+    image: nginx:1.17.4-alpine
+    container_name: nginx
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./static_content:/etc/nginx/static_content
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
