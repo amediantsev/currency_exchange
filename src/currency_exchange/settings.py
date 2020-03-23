@@ -10,7 +10,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'qkngi6q!7y74@lht)x2ivvzcd%^s@g0@_j$^78%$#nft828#dj'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*', '0.0.0.0', '127.0.0.1',]
 
@@ -149,7 +149,7 @@ AUTH_USER_MODEL = 'account.User'
 CELERY_BEAT_SCHEDULE = {
     'parse-rates': {
         'task': 'currency.tasks.parse_rates',
-        'schedule': crontab(minute='*/10')
+        'schedule': crontab(minute='*/1')
     }
 }
 
