@@ -56,6 +56,7 @@ TEMPLATES = [
     },
 ]
 
+ADMINS = [('ZenCrazyCat', 'zencrazycat@gmail.com')]
 
 LOGIN_REDIRECT_URL = reverse_lazy('index')
 LOGOUT_REDIRECT_URL = reverse_lazy('index')
