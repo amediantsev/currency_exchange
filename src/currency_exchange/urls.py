@@ -14,9 +14,16 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
 
     path('account/', include('account.urls')),
-    path('currency/', include('currency.urls'))
+    path('currency/', include('currency.urls')),
+
+    # API
+    path('api/v1/currency/', include('currency.api.urls')),
 ]
 
+from rest_framework_swagger.views import get_swagger_view
+schema_view = get_swagger_view(title='DOCS')
+
+urlpatterns.append(path(rf'api/v1/docs/', schema_view))
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
