@@ -4,7 +4,12 @@ from uuid import uuid4
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-from account.tasks import send_activation_code_async
+from account.tasks import send_activation_code_async, send_sms_code_async
+
+
+def generate_sms_code():
+    import random
+    return random.randint(1000, 32000)
 
 
 def avatar_path(instance, filename):
@@ -19,6 +24,7 @@ class User(AbstractUser):
                                null=True,
                                blank=True,
                                default=None)
+    phone = models.CharField(max_length=20)
 
 
 class Contact(models.Model):
@@ -26,6 +32,7 @@ class Contact(models.Model):
     title = models.CharField(max_length=256)
     body = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
+
 
 class ActivationCode(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='activation_codes')
@@ -43,10 +50,20 @@ class ActivationCode(models.Model):
         send_activation_code_async(self.user.email, self.code)
 
 
+class SmsCode(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sms_codes')
+    created = models.DateTimeField(auto_now_add=True)
+    code = models.PositiveSmallIntegerField(default=generate_sms_code)
+    is_activated = models.BooleanField(default=False)
 
+    @property
+    def is_expired(self):
+        now = timezone.now()
+        diff = now - self.created
+        return diff.days > 7
 
-
-
+    def send_sms_code(self):
+        send_sms_code_async.delay(self.user.phone, self.code)
 
 
 import account.signals
