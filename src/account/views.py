@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
-from account.forms import SignUpForm
+from account.forms import SignUpForm #, SignUpSMSForm
 from account.models import User, Contact, ActivationCode
 from account.tasks import send_email_async
 from currency_exchange import settings
@@ -59,3 +59,27 @@ class Activate(generic.View):
         user.is_active = True
         user.save(update_fields=['is_active'])
         return redirect('index')
+
+
+# class SignUpSMS(generic.CreateView):
+#     template_name = 'signup.html'
+#     queryset = User.objects.all()
+#     form_class = SignUpSMSForm
+#     success_url = reverse_lazy('confirmation')
+
+
+# class SMS_Activate(generic.View):
+#
+#     def get(self, request, activation_code):
+#         ac = get_object_or_404(ActivationCode.objects.select_related('user'),
+#                                code=activation_code, is_activated=False)
+#
+#         if ac.is_expired:
+#             return Http404
+#
+#         ac.is_activated = True
+#         ac.save(update_fields=['is_activated'])
+#         user = ac.user
+#         user.is_active = True
+#         user.save(update_fields=['is_active'])
+#         return redirect('index')
