@@ -19,6 +19,7 @@ class User(AbstractUser):
                                null=True,
                                blank=True,
                                default=None)
+    phone = models.CharField(max_length=20)
 
 
 class Contact(models.Model):
@@ -43,10 +44,20 @@ class ActivationCode(models.Model):
         send_activation_code_async(self.user.email, self.code)
 
 
-
-
-
-
+# class SMS_ActivationCode(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='activation_codes')
+#     created = models.DateTimeField(auto_now_add=True)
+#     code = models.UUIDField(default=uuid4, editable=False, unique=True)
+#     is_activated = models.BooleanField(default=False)
+#
+#     @property
+#     def is_expired(self):
+#         now = timezone.now()
+#         diff = now - self.created
+#         return diff.days > 7
+#
+#     def send_activation_code(self):
+#         send_activation_code_async(self.user.email, self.code)
 
 
 import account.signals
