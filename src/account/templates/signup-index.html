@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Sign Up
+{% endblock %}
+
+{% block content %}
+  <h2>Sign up</h2>
+  <a class="nav-link" href="{% url 'account:signup' %}">
+  <input type="button" value=" Sign up with email-confirmation ">
+  </a>
+  <a class="nav-link" href="{% url 'account:signup-sms' %}">
+  <input type="button" value=" Sign up with phone-confirmation ">
+  </a>
+{% endblock %}
