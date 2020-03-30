@@ -50,7 +50,7 @@
             <a class="nav-link" href="{% url 'currency:download-rates' %}">Download Rates</a>
         </li>
 
-        {% if request.user.is_authenticated and request.user.avatar %}
+        {% if request.user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'account:my-profile' pk=request.user.id %}">My profile</a>
           </li>
@@ -62,7 +62,7 @@
             <a class="nav-link" href="{% url 'login' %}">Log in</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'account:signup' %}">Sign up</a>
+            <a class="nav-link" href="{% url 'account:signup-index' %}">Sign up</a>
           </li>
         {% endif %}
         <li class="nav-item">
