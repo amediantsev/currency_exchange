@@ -131,7 +131,7 @@ dmypy.json
 settings_local.py
 settings_local.dev.py
 .idea
-!.gitkeep
+.gitkeep
 /run
 static_content
 .kill_nginx&postgres.sh

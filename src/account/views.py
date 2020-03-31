@@ -3,10 +3,14 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
-from account.forms import SignUpForm
-from account.models import User, Contact, ActivationCode
+from account.forms import SignUpForm, ActivateForm, SignUpSMSForm
+from account.models import User, Contact, ActivationCode, SmsCode
 from account.tasks import send_email_async
 from currency_exchange import settings
+
+
+class SignUpIndex(generic.TemplateView):
+    template_name = 'signup-index.html'
 
 
 class SignUp(generic.CreateView):
@@ -14,6 +18,15 @@ class SignUp(generic.CreateView):
     queryset = User.objects.all()
     form_class = SignUpForm
     success_url = reverse_lazy('login')
+
+
+class SignUpSMS(SignUp):
+    form_class = SignUpSMSForm
+    success_url = reverse_lazy('account:sms-activate')
+
+    def get_success_url(self):
+        self.request.session['user_id'] = self.object.id
+        return super().get_success_url()
 
 
 class MyProfile(generic.UpdateView):
@@ -55,6 +68,36 @@ class Activate(generic.View):
 
         ac.is_activated = True
         ac.save(update_fields=['is_activated'])
+        user = ac.user
+        user.is_active = True
+        user.save(update_fields=['is_active'])
+        return redirect('index')
+
+
+class SMSActivate(generic.FormView):
+    form_class = ActivateForm
+    template_name = 'signup.html'
+
+    # def dispatch(self, request, *args, **kwargs):
+    #     super().dispatch()
+
+    def post(self, request):
+        user_id = request.session['user_id']
+        sms_code = request.POST['sms_code']
+
+        ac = get_object_or_404(
+            SmsCode.objects.select_related('user'),
+            code=sms_code,
+            user_id=user_id,
+            is_activated=False,
+        )
+
+        if ac.is_expired:
+            raise Http404
+
+        ac.is_activated = True
+        ac.save(update_fields=['is_activated'])
+
         user = ac.user
         user.is_active = True
         user.save(update_fields=['is_active'])

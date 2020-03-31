@@ -38,18 +38,19 @@ def _mono():
     response = requests.get(url)
     r_json = response.json()
 
-    for rate in r_json:
-        if (rate['currencyCodeA'] in {840, 978}) and (rate['currencyCodeB'] == 980):
-            currency = mch.CURR_USD if rate['currencyCodeA'] == 840 else mch.CURR_EUR
-            rate_kwargs = {
-                'currency': currency,
-                'buy': Decimal(str(round(rate['rateBuy'], 2))),
-                'sale': Decimal(str(round(rate['rateSell'], 2))),
-                'source': mch.SR_MONO
-            }
-            new_rate = Rate(**rate_kwargs)
-            last_rate = Rate.objects.filter(currency=currency, source=mch.SR_MONO).last()
-            save_rate(last_rate, new_rate)
+    if r_json != {'errorDescription': 'Too many requests'}:
+        for rate in r_json:
+            if (rate['currencyCodeA'] in {840, 978}) and (rate['currencyCodeB'] == 980):
+                currency = mch.CURR_USD if rate['currencyCodeA'] == 840 else mch.CURR_EUR
+                rate_kwargs = {
+                    'currency': currency,
+                    'buy': Decimal(str(round(rate['rateBuy'], 2))),
+                    'sale': Decimal(str(round(rate['rateSell'], 2))),
+                    'source': mch.SR_MONO
+                }
+                new_rate = Rate(**rate_kwargs)
+                last_rate = Rate.objects.filter(currency=currency, source=mch.SR_MONO).last()
+                save_rate(last_rate, new_rate)
 
 def _vkurse():
     url = 'http://vkurse.dp.ua/course.json'

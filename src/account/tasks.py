@@ -7,6 +7,7 @@ from django.urls import reverse
 def send_email_async(subject, message, email_from, recipient_list):
     send_mail(subject, message, email_from, recipient_list)
 
+
 @shared_task
 def send_activation_code_async(email_to, code):
     path = reverse('account:activate', args=(code, ))
@@ -16,3 +17,8 @@ def send_activation_code_async(email_to, code):
               [email_to],
               fail_silently=False
               )
+
+
+@shared_task()
+def send_sms_code_async(phone, code):
+    print(phone, code)
