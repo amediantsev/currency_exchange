@@ -1,8 +1,10 @@
+from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils import timezone
 from uuid import uuid4
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils.translation import gettext
 
 from account.tasks import send_activation_code_async, send_sms_code_async
 
@@ -19,12 +21,25 @@ def avatar_path(instance, filename):
     return '/'.join(['avatar', str(instance.id), filename])
 
 
+
+
 class User(AbstractUser):
     avatar = models.ImageField(upload_to=avatar_path,
                                null=True,
                                blank=True,
                                default=None)
     phone = models.CharField(max_length=20)
+    username_validator = UnicodeUsernameValidator()
+    username = models.CharField(
+        gettext('username'),
+        max_length=150,
+        unique=True,
+        validators=[username_validator],
+        error_messages={
+            'unique': gettext("A user with that username already exists."),
+            'required': gettext("Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."),
+        }
+    )
 
 
 class Contact(models.Model):
