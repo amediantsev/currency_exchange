@@ -11,12 +11,15 @@ coreschema==0.0.4
 decorator==4.4.1
 Django==2.2.10
 django-celery-beat==1.6.0
+django-debug-toolbar==2.2
 django-extensions==2.2.8
 django-rest-swagger==2.1.2
 django-timezone-field==3.1
 djangorestframework==3.11.0
+djangorestframework-simplejwt==4.4.0
 entrypoints==0.3
 flake8==3.7.9
+gunicorn==20.0.4
 idna==2.9
 importlib-metadata==1.5.0
 ipython==7.12.0
@@ -41,6 +44,7 @@ ptyprocess==0.6.0
 pycodestyle==2.5.0
 pyflakes==2.1.1
 Pygments==2.5.2
+PyJWT==1.7.1
 python-crontab==2.4.0
 python-dateutil==2.8.1
 python-memcached==1.59

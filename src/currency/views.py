@@ -13,6 +13,8 @@ class LastRates(generic.ListView):
     paginate_by = 20
 
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'qkngi6q!7y74@lht)x2ivvzcd%^s@g0@_j$^78%$#nft828#dj'
 class RateCSV(generic.View):
     def get(self, request):
         response = HttpResponse(content_type='text/csv')
