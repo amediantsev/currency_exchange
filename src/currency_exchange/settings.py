@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'rest_framework_swagger',
+    'django_filters',
 
     'account',
     'currency',
@@ -109,14 +110,17 @@ CACHES = {
 }
 
 REST_FRAMEWORK = {
-    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    'DEFAULT_AUTHENTICATION_CLASSES': (
         # 'rest_framework.authentication.SessionAuthentication',
-    #     'rest_framework_simplejwt.authentication.JWTAuthentication',
-    # ),
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ]
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated'
+    ],
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
 }
 
 REST_USE_JWT = True
@@ -219,7 +223,6 @@ REST_FRAMEWORK = {
 }
 
 REST_USE_JWT = True
-from datetime import timedelta
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=14),
