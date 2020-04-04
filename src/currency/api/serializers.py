@@ -2,6 +2,8 @@ from rest_framework import serializers
 
 from account.models import Contact
 from currency.models import Rate
+from currency_exchange.settings import EMAIL_HOST_USER
+from account.tasks import send_email_async
 
 
 class RateSerializer(serializers.ModelSerializer):
@@ -35,3 +37,13 @@ class ContactSerializer(serializers.ModelSerializer):
             'title',
             'body',
         )
+
+
+    def create(self, validated_data):
+        email_from = self.validated_data['email']
+        message = self.validated_data['body']
+        subject = self.validated_data['title']
+        recipient_list = [EMAIL_HOST_USER]
+        send_email_async.delay(subject, message, email_from, recipient_list)
+
+        super().create(self.validated_data)
