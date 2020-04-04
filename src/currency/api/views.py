@@ -1,6 +1,5 @@
 from rest_framework import generics
 
-from account.tasks import send_email_async
 from currency.api.serializers import *
 from currency.api.filters import *
 from currency_exchange.settings import EMAIL_HOST_USER
@@ -29,20 +28,15 @@ class ContactsView(generics.ListCreateAPIView):
         self.queryset = Contact.objects.filter(email=self.request.user.email)
         return self.queryset
 
-    def post(self, request, *args, **kwargs):
-        send_email_async.delay(
-            request.data['title'],
-            request.data['body'],
-            request.data['email'],
-            [EMAIL_HOST_USER]
-        )
-        return self.create(request, *args, **kwargs)
-
 
 class ContactView(generics.RetrieveUpdateAPIView):
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
 
+    def get_queryset(self):
+        super().get_queryset()
+        self.queryset = Contact.objects.filter(email=self.request.user.email)
+        return self.queryset
 
 #  filters - https://django-filter.readthedocs.io/en/master/
 '''
