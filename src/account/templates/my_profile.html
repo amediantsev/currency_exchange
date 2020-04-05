@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}
 My profile
@@ -8,8 +9,8 @@ My profile
 {% if request.user.id == user.id %}
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
+    {% crispy form %}
+    <button type="submit" class="btn btn-primary">Save</button>
 </form>
 {% else %}
 <h4>Sorry, it's not your profile, you can't edit it</h4>
