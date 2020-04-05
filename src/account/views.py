@@ -2,11 +2,16 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
+from django.contrib.auth.views import LoginView
 
-from account.forms import SignUpForm, ActivateForm, SignUpSMSForm
+from account.forms import SignUpForm, ActivateForm, SignUpSMSForm, LoginForm, MyProfileForm
 from account.models import User, Contact, ActivationCode, SmsCode
 from account.tasks import send_email_async
 from currency_exchange import settings
+
+
+class RebootLoginView(LoginView):
+    form_class = LoginForm
 
 
 class SignUpIndex(generic.TemplateView):
@@ -32,8 +37,8 @@ class SignUpSMS(SignUp):
 class MyProfile(generic.UpdateView):
     template_name = 'my_profile.html'
     queryset = User.objects.filter(is_active=True)
-    fields = ('email', )
     success_url = reverse_lazy('index')
+    form_class = MyProfileForm
 
     # def get_queryset(self):
     #     queryset = super().get_queryset()
