@@ -202,6 +202,8 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, '..', "static_content", 'static')
 
+
+
 AUTH_USER_MODEL = 'account.User'
 
 CELERY_BEAT_SCHEDULE = {
