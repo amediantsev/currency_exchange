@@ -1,23 +1,42 @@
 from rest_framework import generics
 
-from currency.api.serializers import RateSerializer
-from currency.models import Rate
+from currency.api.serializers import *
+from currency.api.filters import *
+from currency_exchange.settings import EMAIL_HOST_USER
 
 
 class RatesView(generics.ListCreateAPIView):
     queryset = Rate.objects.all()
     serializer_class = RateSerializer
-
-    # useful for 2
-    # def get_queryset(self):
-    # self.request.user
-    #     pass
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = RateFilter
 
 
 class RateView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Rate.objects.all()
     serializer_class = RateSerializer
 
+
+class ContactsView(generics.ListCreateAPIView):
+    queryset = Contact.objects.all()
+    serializer_class = ContactSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = ContactFilter
+
+    def get_queryset(self):
+        super().get_queryset()
+        self.queryset = Contact.objects.filter(email=self.request.user.email)
+        return self.queryset
+
+
+class ContactView(generics.RetrieveUpdateAPIView):
+    queryset = Contact.objects.all()
+    serializer_class = ContactSerializer
+
+    def get_queryset(self):
+        super().get_queryset()
+        self.queryset = Contact.objects.filter(email=self.request.user.email)
+        return self.queryset
 
 #  filters - https://django-filter.readthedocs.io/en/master/
 '''
