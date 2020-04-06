@@ -37,22 +37,3 @@ class ContactView(generics.RetrieveUpdateAPIView):
         super().get_queryset()
         self.queryset = Contact.objects.filter(email=self.request.user.email)
         return self.queryset
-
-#  filters - https://django-filter.readthedocs.io/en/master/
-'''
-1.
-http://127.0.0.1:8000/api/v1/currency/rates/?created__lt=10/10/2019
-'created' - exact, lt, lte, gt, gte + BONUS range
-'currency', - exact
-'source', - exact
-2. account.model.Contact - /contacts/ - GET, POST
-                           /contacts/<id>/ - GET, PUT
-                           list only auth users (request.user)
-                           send email after create (/contacts/id/ POST)
-
-3. BONUS
-ADD TESTS for API
-self.client.get('api/v1/currency/rates/') -> json
-self.client.post('api/v1/currency/rates/', data={}) -> json['id']
-self.client.get('api/v1/currency/rates/json['id']') -> status_code == 200
-'''
