@@ -1,16 +1,30 @@
 import csv
+from urllib.parse import urlencode
 
 from django.http import HttpResponse
 from django.views import generic
+from django_filters.views import FilterView
 
+from currency.filters import RateFilter
 from currency.models import Rate
 
-class LastRates(generic.ListView):
+class LastRates(FilterView):
+    filterset_class = RateFilter
     template_name = 'last-rates.html'
     model = Rate
     queryset = Rate.objects.all()
     ordering = '-created'
     paginate_by = 20
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+
+        query_params = dict(self.request.GET.items())
+        if 'page' in query_params:
+            del query_params['page']
+        context['query_params'] = urlencode(query_params)
+
+        return context
 
 
 class RateCSV(generic.View):

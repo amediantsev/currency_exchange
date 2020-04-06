@@ -5,7 +5,15 @@ Last rates
 {% endblock title %}
 
 {% block content %}
-<table class="table">
+
+<form method="get">
+  {{ filter.form.as_p }}
+    <button type="submit" class="btn btn-primary">
+      <span class="glyphicon glyphicon-search"></span> Search
+    </button>
+</form>
+
+<table class="table table-striped">
   <thead>
     <tr>
       <th scope="col">Bank</th>
@@ -27,4 +35,7 @@ Last rates
     {% endfor %}
   </tbody>
 </table>
+
+{% include 'includes/pagination.html' %}
+
 {% endblock content %}
