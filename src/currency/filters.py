@@ -18,4 +18,4 @@ class RateFilter(django_filters.FilterSet):
 
     class Meta:
         model = Rate
-        fields = ['sale', 'source', 'created', 'created_date']
+        fields = ['sale', 'buy', 'source', 'created_date']
