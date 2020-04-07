@@ -64,7 +64,6 @@ def test_get_rates(api_client, user):
 @pytest.mark.django_db
 def test_send_email(mocker):
     emails = mail.outbox
-    print('EMAILS:', emails)
 
     send_activation_code_async(1, str(uuid4()))
 
@@ -72,4 +71,16 @@ def test_send_email(mocker):
     assert len(mail.outbox) == 1
 
     email = mail.outbox[0]
-    print(email.__dict__)
+
+
+def test_contactus(client):
+    url = reverse('account:contact-us')
+    response = client.get(url)
+    assert response.status_code == 200
+
+    response = client.post(
+        url,
+        data={'email': 'fdsfdsfdsf', 'subject': 'subject', 'body': 'body'},
+    )
+
+    assert response.status_code == 200

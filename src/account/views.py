@@ -2,16 +2,11 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
-from django.contrib.auth.views import LoginView
 
-from account.forms import SignUpForm, ActivateForm, SignUpSMSForm, LoginForm, MyProfileForm
+from account.forms import SignUpForm, ActivateForm, SignUpSMSForm
 from account.models import User, Contact, ActivationCode, SmsCode
 from account.tasks import send_email_async
 from currency_exchange import settings
-
-
-class RebootLoginView(LoginView):
-    form_class = LoginForm
 
 
 class SignUpIndex(generic.TemplateView):
@@ -38,7 +33,8 @@ class MyProfile(generic.UpdateView):
     template_name = 'my_profile.html'
     queryset = User.objects.filter(is_active=True)
     success_url = reverse_lazy('index')
-    form_class = MyProfileForm
+    fields = ('email', 'phone', 'avatar')
+    model = User
 
     # def get_queryset(self):
     #     queryset = super().get_queryset()
@@ -46,18 +42,16 @@ class MyProfile(generic.UpdateView):
 
 
 class ContactUs(generic.CreateView):
-    template_name = 'my_profile.html'
+    template_name = 'contact-us.html'
     queryset = Contact.objects.all()
-    fields = ('email', 'title', 'body')
+    fields = ('title', 'body')
     success_url = reverse_lazy('index')
     model = Contact
 
-
-
     def form_valid(self, form):
-        subject = self.object.title
-        message = self.object.body
-        email_from = self.object.email
+        subject = form.cleaned_data.get('title')
+        message = form.cleaned_data.get('body')
+        email_from = self.request.user.email
         recipient_list = [settings.EMAIL_HOST_USER]
         send_email_async.delay(subject=subject, message=message, email_from=email_from, recipient_list=recipient_list)
         return super().form_valid(form)

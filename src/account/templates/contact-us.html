@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Contact us
+{% endblock title %}
+
+{% block content %}
+{% if user.is_authenticated %}
+{% load crispy_forms_tags %}
+
+<form method = "post">
+
+        <h2 class="text-center">Contact us</h2>
+     <div>
+
+      <div class="col-6 p-0 mx-auto col-sm-6 col-md-5 col-lg-4">
+        {{ form.email|as_crispy_field }}
+      </div>
+        <div class="col-6 p-0 mx-auto col-sm-6 col-md-5 col-lg-4">
+        {{ form.title|as_crispy_field }}
+      </div>
+        <div class="col-6 p-0 mx-auto col-sm-6 col-md-5 col-lg-4">
+        {{ form.body|as_crispy_field }}
+      </div>
+
+</div>
+    {% csrf_token %}
+      <button type="submit"  class="btn btn-dark col-sm-6 col-md-5 col-lg-4 mt-5 mx-auto d-block">Sign Up</button>
+</form>
+{% else %}
+<p>
+  Sorry, you can't contact us until you are logged in.
+  But! You can just log in or sign up if you still haven’t done so:
+</p>
+<a class="nav-link" href="{% url 'login' %}">
+  <button type="submit"  class="btn btn-dark col-sm-6 col-md-5 col-lg-2">Log in</button>
+</a>
+<a class="nav-link" href="{% url 'account:signup-index' %}">
+  <button type="submit"  class="btn btn-dark col-sm-6 col-md-5 col-lg-2">Sign up</button>
+</a>
+{% endif %}
+{% endblock content %}

@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
 
 {% block title %}
 Login
@@ -7,11 +6,21 @@ Login
 
 {% block content %}
 
-<h2>Login</h2>
+{% load crispy_forms_tags %}
 <form method="post">
-  {% csrf_token %}
-  {% crispy form %}
-  <button type="submit" class="btn btn-primary">Log In</button>
+   <h2 class="text-center">Login</h2>
+    <div>
+
+      <div class="col-6 p-0 mx-auto col-sm-6 col-md-5 col-lg-4">
+        {{ form.username|as_crispy_field }}
+      </div>
+        <div class="col-6 p-0 mx-auto col-sm-6 col-md-5 col-lg-4">
+        {{ form.password|as_crispy_field }}
+      </div>
+
+</div>
+    {%csrf_token%}
+      <button type="submit"  class="btn btn-dark col-sm-6 col-md-5 col-lg-4 mt-5 mx-auto d-block">Login</button>
 </form>
 
 {% endblock content %}

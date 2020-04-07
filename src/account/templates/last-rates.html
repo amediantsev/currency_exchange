@@ -6,14 +6,28 @@ Last rates
 
 {% block content %}
 
+{% load crispy_forms_tags %}
+
 <form method="get">
-  {{ filter.form.as_p }}
-    <button type="submit" class="btn btn-primary">
-      <span class="glyphicon glyphicon-search"></span> Search
-    </button>
+  <div class="col-6 p-0 col-sm-6 col-md-5 col-lg-4">
+    {{ filter.form.sale|as_crispy_field }}
+  </div>
+  <div class="col-6 p-0 col-sm-6 col-md-5 col-lg-4">
+    {{ filter.form.buy|as_crispy_field }}
+  </div>
+  <div class="col-6 p-0 col-sm-6 col-md-5 col-lg-4">
+    {{ filter.form.source|as_crispy_field }}
+  </div>
+  <div class="col-6 p-0 col-sm-6 col-md-5 col-lg-4">
+    {{ filter.form.created_date|as_crispy_field }}
+  </div>
+<button type="submit" class="btn btn-dark col-sm-6 col-md-5 col-lg-4 mt-5 d-block">Search</button>
+  <span class="glyphicon glyphicon-search"></span>
 </form>
 
-<table class="table table-striped">
+<h3 class="text-center">Latest Rates</h3>
+
+<table class="table table-striped table-sm">
   <thead>
     <tr>
       <th scope="col">Bank</th>
@@ -30,7 +44,7 @@ Last rates
       <td>{{ rate.get_currency_display }}</td>
       <td>{{ rate.buy }}</td>
       <td>{{ rate.sale }}</td>
-      <td>{{ rate.created }}</td>
+      <td>{{ rate.created|date:'Y-m-d' }} &nbsp &nbsp &nbsp {{ rate.created|date:'H:i' }}</td>
     </tr>
     {% endfor %}
   </tbody>
