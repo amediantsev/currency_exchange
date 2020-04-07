@@ -8,8 +8,15 @@ from currency_exchange.settings import MEDIA_ROOT
 
 @receiver(pre_save, sender=User)
 def pre_save_User(sender, instance, **kwargs):
+    print('instance:')
+    print(instance)
+    print('instance.avatar: ')
+    print(instance.avatar)
+    print('user with this avatar: ')
+    print(User.objects.get(id=instance.id))
+
     try:
-        if instance.avatar != None:
+        if instance.avatar not in (None, User.objects.get(id=instance.id).avatar):
             shutil.rmtree(os.path.join(MEDIA_ROOT, 'avatar', str(instance.id)))
     except:
         pass
