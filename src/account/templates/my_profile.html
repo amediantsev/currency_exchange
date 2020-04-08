@@ -12,20 +12,20 @@
 
 <form method = "post" enctype="multipart/form-data">
 
-  <h2 class="text-center">Your profile</h2>
+  <h2 class="mx-4">Your profile</h2>
   <div>
-    <div class="col-6 p-0 mx-auto col-sm-6 col-md-5 col-lg-4">
+    <div class="col-6 p-0 mx-4 col-sm-6 col-md-5 col-lg-4">
       {{ form.email|as_crispy_field }}
     </div>
-    <div class="col-6 p-0 mx-auto col-sm-6 col-md-5 col-lg-4">
+    <div class="col-6 p-0 mx-4 col-sm-6 col-md-5 col-lg-4">
       {{ form.phone|as_crispy_field }}
     </div>
-    <div class="col-6 p-0 mx-auto col-sm-6 col-md-5 col-lg-4">
+    <div class="col-6 p-0 mx-4 col-sm-6 col-md-5 col-lg-4">
       {{ form.avatar|as_crispy_field }}
     </div>
   </div>
   {%csrf_token%}
-  <button type="submit"  class="btn btn-dark col-sm-6 col-md-5 col-lg-4 mt-5 mx-auto d-block">Edit</button>
+  <button type="submit"  class="btn btn-dark col-sm-6 col-md-5 col-lg-4 mt-4 mx-4 d-block">Save</button>
 </form>
 
 {% else %}

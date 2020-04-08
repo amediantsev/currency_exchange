@@ -1,32 +1,24 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
-
 {% block title %}
 Contact us
 {% endblock title %}
 
 {% block content %}
 {% if user.is_authenticated %}
-{% load crispy_forms_tags %}
 
 <form method = "post">
-
-        <h2 class="text-center">Contact us</h2>
-     <div>
-
-      <div class="col-6 p-0 mx-auto col-sm-6 col-md-5 col-lg-4">
-        {{ form.email|as_crispy_field }}
-      </div>
-        <div class="col-6 p-0 mx-auto col-sm-6 col-md-5 col-lg-4">
-        {{ form.title|as_crispy_field }}
-      </div>
-        <div class="col-6 p-0 mx-auto col-sm-6 col-md-5 col-lg-4">
-        {{ form.body|as_crispy_field }}
-      </div>
-
-</div>
     {% csrf_token %}
-      <button type="submit"  class="btn btn-dark col-sm-6 col-md-5 col-lg-4 mt-5 mx-auto d-block">Sign Up</button>
+    <h2 class="text-center">Contact us</h2>
+    <div>
+        <div class="col-6 p-0 mx-auto col-sm-6 col-md-5 col-lg-4">
+            {{ form.title|as_crispy_field }}
+        </div>
+        <div class="col-6 p-0 mx-auto col-sm-6 col-md-5 col-lg-4">
+            {{ form.body|as_crispy_field }}
+        </div>
+    </div>
+    <button type="submit"  class="btn btn-dark col-sm-6 col-md-5 col-lg-4 mt-5 mx-auto d-block">Send email</button>
 </form>
 {% else %}
 <p>
