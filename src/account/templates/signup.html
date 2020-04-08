@@ -9,26 +9,26 @@ Sign Up
 {% load crispy_forms_tags %}
 
 <form method = "post">
-
-        <h2 class="text-center">Sign Up</h2>
-     <div>
-
-      <div class="col-6 p-0 mx-auto col-sm-6 col-md-5 col-lg-4">
-        {{ form.email|as_crispy_field }}
-      </div>
+    <h2 class="text-center">Sign Up</h2>
+    <div>
         <div class="col-6 p-0 mx-auto col-sm-6 col-md-5 col-lg-4">
-        {{ form.username|as_crispy_field }}
-      </div>
+            {{ form.username|as_crispy_field }>
+        </div>
         <div class="col-6 p-0 mx-auto col-sm-6 col-md-5 col-lg-4">
-        {{ form.password|as_crispy_field }}
-      </div>
-         <div class="col-6 p-0 mx-auto col-sm-6 col-md-5 col-lg-4">
-        {{ form.password2|as_crispy_field }}
-      </div>
-
-</div>
+            {{ form.email|as_crispy_field }}
+        </div>
+        <div class="col-6 p-0 mx-auto col-sm-6 col-md-5 col-lg-4">
+            {{ form.password|as_crispy_field }}
+        </div>
+        <div class="col-6 p-0 mx-auto col-sm-6 col-md-5 col-lg-4">
+            {{ form.password2|as_crispy_field }}
+        </div>
+        <div class="col-6 p-0 mx-auto col-sm-6 col-md-5 col-lg-4">
+            {{ form.phone|as_crispy_field }}
+        </div>
+    </div>
     {%csrf_token%}
-      <button type="submit"  class="btn btn-dark col-sm-6 col-md-5 col-lg-4 mt-5 mx-auto d-block">Sign Up</button>
+    <button type="submit"  class="btn btn-dark col-sm-6 col-md-5 col-lg-4 mt-5 mx-auto d-block">Sign Up</button>
 </form>
 
 {% endblock content%}

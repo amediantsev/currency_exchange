@@ -39,7 +39,6 @@ def test_rates_auth(api_client, user):
     assert response.status_code == 200
 
 
-@pytest.mark.skip
 @pytest.mark.django_db
 def test_get_rates(api_client, user):
     url = reverse('api-currency:rates')
@@ -72,15 +71,3 @@ def test_send_email(mocker):
 
     email = mail.outbox[0]
 
-
-def test_contactus(client):
-    url = reverse('account:contact-us')
-    response = client.get(url)
-    assert response.status_code == 200
-
-    response = client.post(
-        url,
-        data={'email': 'fdsfdsfdsf', 'subject': 'subject', 'body': 'body'},
-    )
-
-    assert response.status_code == 200

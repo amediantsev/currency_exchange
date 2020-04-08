@@ -75,7 +75,7 @@ class Activate(generic.View):
 
 class SMSActivate(generic.FormView):
     form_class = ActivateForm
-    template_name = 'signup.html'
+    template_name = 'sms-activate.html'
 
     # def dispatch(self, request, *args, **kwargs):
     #     super().dispatch()
