@@ -1,13 +1,24 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Index
+Currency_exchange
 {% endblock title %}
 
 {% block content %}
 <section class="resume-section p-3 p-lg-5 d-flex align-items-center" id="about">
     <div class="w-100">
-        <h1 class="mb-0">Currency
+        {% if request.user.is_authenticated %}
+        <h2 class="mb-0">
+            Hi, <span class="text-primary">{{ request.user }}</span> , welcome to the
+        </h2>
+        {% else %}
+        <h2 class="mb-0">
+            Hi, welcome to the
+        </h2>
+        {% endif %}
+        <br>
+        <h1 class="mb-0">
+            Currency
             <span class="text-primary">Exchange</span>
         </h1>
         <div class="subheading mb-5">+38(098)59-052-95 ·
