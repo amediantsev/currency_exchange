@@ -33,17 +33,17 @@ class ContactSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'created',
-            'email',
             'title',
             'body',
         )
 
 
     def create(self, validated_data):
+        self.validated_data['email'] = self.context['request'].user.email
         email_from = self.validated_data['email']
         message = self.validated_data['body']
         subject = self.validated_data['title']
         recipient_list = [EMAIL_HOST_USER]
         send_email_async.delay(subject, message, email_from, recipient_list)
 
-        super().create(self.validated_data)
+        return super().create(self.validated_data)

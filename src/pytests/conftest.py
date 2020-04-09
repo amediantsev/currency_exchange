@@ -22,7 +22,7 @@ def db_session(request, django_db_setup, django_db_blocker):
         _django_db_fixture_helper(request, django_db_blocker, transactional=False)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def api_client():
     client = APIClient()
 

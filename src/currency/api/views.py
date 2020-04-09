@@ -2,7 +2,6 @@ from rest_framework import generics
 
 from currency.api.serializers import *
 from currency.api.filters import *
-from currency_exchange.settings import EMAIL_HOST_USER
 
 
 class RatesView(generics.ListCreateAPIView):
