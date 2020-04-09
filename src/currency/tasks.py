@@ -3,7 +3,7 @@ import requests
 
 from django.utils import timezone
 from celery import shared_task
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup as bs
 from pandas import date_range
 
 from currency.models import Rate
@@ -81,7 +81,7 @@ def _vkurse():
 def _otp():
     url = 'https://www.otpbank.com.ua/'
     response = requests.get(url)
-    soup = BeautifulSoup(response.content, 'html.parser')
+    soup = bs(response.content, 'html.parser')
     currency_block = soup.find('tbody', class_='currency-list__body')
     currency_block = currency_block.select("tbody tr")
     for tr_tag in currency_block:
@@ -107,7 +107,7 @@ def _otp():
 def _pumb():
     url = 'https://www.pumb.ua/'
     response = requests.get(url)
-    soup = BeautifulSoup(response.content, 'html.parser')
+    soup = bs(response.content, 'html.parser')
     currency_block = soup.find('div', class_='exchange-rate')
     currency_block = currency_block.select("table tr")
     target_blocks = [currency_block[1], currency_block[2]]
@@ -136,7 +136,7 @@ def _pumb():
 def _oshchad():
     url = 'https://www.oschadbank.ua/ua'
     response = requests.get(url)
-    soup = BeautifulSoup(response.content, 'html.parser')
+    soup = bs(response.content, 'html.parser')
     currs = {'USD', 'EUR'}
     for i in currs:
         if i == 'USD':
