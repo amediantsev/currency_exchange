@@ -14,7 +14,7 @@ class Rate(models.Model):
     source = models.PositiveSmallIntegerField(choices=mch.SOURCE_CHOICES)
 
     class Meta():
-        ordering = ('created', )
+        ordering = ('-created', )
 
     def __str__(self):
         return f'{self.get_source_display()} ' \
