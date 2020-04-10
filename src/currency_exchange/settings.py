@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'django_filters',
     'crispy_forms',
+    'compressor',
 
     'account',
     'currency',
@@ -202,6 +203,14 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, '..', "static_content", 'static')
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # other finders..
+    'compressor.finders.CompressorFinder',
+)
+
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 

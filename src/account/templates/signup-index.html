@@ -5,11 +5,15 @@ Sign Up
 {% endblock %}
 
 {% block content %}
-  <h2>Sign up</h2>
+  <h2 class="col-sm-6 col-md-5 col-lg-4 mt-5 mx-auto d-block">Sign up</h2>
   <a class="nav-link" href="{% url 'account:signup' %}">
-  <input type="button" value=" Sign up with email-confirmation ">
+	<button type="submit"  class="btn btn-dark col-sm-6 col-md-5 col-lg-4 mt-5 mx-auto d-block">
+		Sign up with email-confiramtion
+	</button>
   </a>
   <a class="nav-link" href="{% url 'account:signup-sms' %}">
-  <input type="button" value=" Sign up with phone-confirmation ">
+    <button type="submit" class="btn btn-dark col-sm-6 col-md-5 col-lg-4 mt-5 mx-auto d-block">
+    	Sign up with phone-confiramtion
+    </button>
   </a>
 {% endblock %}
