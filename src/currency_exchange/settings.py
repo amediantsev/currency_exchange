@@ -264,6 +264,8 @@ SWAGGER_SETTINGS = {
     },
 }
 
+CACHE_RATES_TIMEOUT = 60 * 15    # 15 minutes
+
 try:
     from currency_exchange.settings_local import * #noqa
 except ImportError:
