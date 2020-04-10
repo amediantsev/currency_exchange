@@ -33,7 +33,7 @@ class MyProfile(generic.UpdateView):
     template_name = 'my_profile.html'
     queryset = User.objects.filter(is_active=True)
     success_url = reverse_lazy('index')
-    fields = ('email', 'phone', 'avatar')
+    fields = ('email', 'first_name', 'last_name', 'phone', 'avatar')
     model = User
 
     # def get_queryset(self):
