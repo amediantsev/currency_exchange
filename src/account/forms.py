@@ -7,10 +7,13 @@ class SignUpForm(forms.ModelForm):
 
     password = forms.CharField(widget=forms.PasswordInput())
     password2 = forms.CharField(widget=forms.PasswordInput())
+    email = forms.EmailField(required=True)
+    first_name = forms.CharField(max_length=30, required=True)
+    last_name = forms.CharField(max_length=150, required=True)
 
     class Meta():
         model = models.User
-        fields = ('email', 'username', 'password', 'password2', 'phone')
+        fields = ('email', 'first_name', 'last_name', 'username', 'password', 'password2', 'phone')
 
     def clean(self):
         cleaned_data = super().clean()

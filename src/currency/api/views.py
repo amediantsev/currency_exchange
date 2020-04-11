@@ -1,8 +1,14 @@
 from rest_framework import generics
+from rest_framework.pagination import PageNumberPagination
 
 from currency.api.serializers import *
 from currency.api.filters import *
-from currency_exchange.settings import EMAIL_HOST_USER
+
+
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
 
 
 class RatesView(generics.ListCreateAPIView):
@@ -10,6 +16,7 @@ class RatesView(generics.ListCreateAPIView):
     serializer_class = RateSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = RateFilter
+    pagination_class = StandardResultsSetPagination
 
 
 class RateView(generics.RetrieveUpdateDestroyAPIView):
@@ -22,6 +29,7 @@ class ContactsView(generics.ListCreateAPIView):
     serializer_class = ContactSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = ContactFilter
+    pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         super().get_queryset()
