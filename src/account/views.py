@@ -33,7 +33,7 @@ class MyProfile(generic.UpdateView):
     template_name = 'my_profile.html'
     queryset = User.objects.filter(is_active=True)
     success_url = reverse_lazy('index')
-    fields = ('email', 'phone', 'avatar')
+    fields = ('email', 'first_name', 'last_name', 'phone', 'avatar')
     model = User
 
     # def get_queryset(self):
@@ -49,11 +49,17 @@ class ContactUs(generic.CreateView):
     model = Contact
 
     def form_valid(self, form):
-        subject = form.cleaned_data.get('title')
-        message = form.cleaned_data.get('body')
-        email_from = self.request.user.email
+        subject = f'From {self.request.user.email}: ' + form.cleaned_data.get('title')
+        message = form.cleaned_data.get('body') + \
+        '\n\n' + \
+        '*' * 100 + \
+        f'\n\nWas sent from user {self.request.user} with email {self.request.user.email}'
+        
+        email_from = settings.EMAIL_HOST_USER
         recipient_list = [settings.EMAIL_HOST_USER]
+        
         send_email_async.delay(subject=subject, message=message, email_from=email_from, recipient_list=recipient_list)
+        
         return super().form_valid(form)
 
 
