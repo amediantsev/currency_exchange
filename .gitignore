@@ -134,4 +134,3 @@ settings_local.dev.py
 !.gitkeep
 /run
 static_content
-.kill_nginx&postgres.sh
