@@ -5,7 +5,7 @@ from django.views import generic
 
 from account.forms import SignUpForm, ActivateForm, SignUpSMSForm
 from account.models import User, Contact, ActivationCode, SmsCode
-from account.tasks import send_email_async
+from account.tasks import send_email_async, send_tel_message
 from currency_exchange import settings
 
 
@@ -76,6 +76,9 @@ class Activate(generic.View):
         user = ac.user
         user.is_active = True
         user.save(update_fields=['is_active'])
+
+        send_tel_message(user=user)
+
         return redirect('index')
 
 
@@ -106,4 +109,7 @@ class SMSActivate(generic.FormView):
         user = ac.user
         user.is_active = True
         user.save(update_fields=['is_active'])
+
+        send_tel_message(user=user)
+        
         return redirect('index')
