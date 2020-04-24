@@ -15,7 +15,7 @@ def send_email_async(subject, message, email_from, recipient_list):
 def send_activation_code_async(email_to, code):
     path = reverse('account:activate', args=(code, ))
     send_mail('Your activation code',
-              f'127.0.0.1:8000{path}',
+              f'134.122.114.146{path}',
               'testtestapp454545@gmail.com',
               [email_to],
               fail_silently=False
