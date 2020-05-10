@@ -34,7 +34,11 @@
 
 <body id="page-top">
 
+
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+
+    <img src="/media/logos/Logo.jpg" alt="" height="240" width="190">
+    
     <a class="navbar-brand js-scroll-trigger" href="{% url 'index' %}">
       {% if request.user.is_authenticated and request.user.avatar %}
       <span class="d-none d-lg-block">
