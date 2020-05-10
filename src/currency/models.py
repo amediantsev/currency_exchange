@@ -9,12 +9,9 @@ from currency.utils import generate_rate_cache_key
 class Rate(models.Model):
     created = models.DateTimeField(default=timezone.now)
     currency = models.PositiveSmallIntegerField(choices=mch.CURRENCY_CHOICES)
-    buy = models.DecimalField(max_digits=4, decimal_places=2)
-    sale = models.DecimalField(max_digits=4, decimal_places=2)
+    buy = models.DecimalField(max_digits=5, decimal_places=3)
+    sale = models.DecimalField(max_digits=5, decimal_places=3)
     source = models.PositiveSmallIntegerField(choices=mch.SOURCE_CHOICES)
-
-    class Meta():
-        ordering = ('-created', )
 
     def __str__(self):
         return f'{self.get_source_display()} ' \
