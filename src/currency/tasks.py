@@ -20,12 +20,18 @@ def _privat():
     r_json = response.json()
 
     for rate in r_json:
-        if rate['ccy'] in {'USD', 'EUR'}:
-            currency = mch.CURR_USD if rate['ccy'] == 'USD' else mch.CURR_EUR
+        if rate['ccy'] in {'USD', 'EUR', 'RUR'}:
+            if rate['ccy'] == 'USD':
+                currency = mch.CURR_USD
+            elif rate['ccy'] == 'EUR':
+                currency = mch.CURR_EUR
+            else:
+                currency = mch.CURR_RUB
+
             rate_kwargs = {
                 'currency': currency,
-                'buy': Decimal(rate['buy'][:5]),
-                'sale': Decimal(rate['sale'][:5]),
+                'buy': Decimal(rate['buy'][:6]),
+                'sale': Decimal(rate['sale'][:6]),
                 'source': mch.SR_PRIVAT
             }
 
@@ -40,14 +46,21 @@ def _mono():
 
     if r_json != {'errorDescription': 'Too many requests'}:
         for rate in r_json:
-            if (rate['currencyCodeA'] in {840, 978}) and (rate['currencyCodeB'] == 980):
-                currency = mch.CURR_USD if rate['currencyCodeA'] == 840 else mch.CURR_EUR
+            if (rate['currencyCodeA'] in {840, 978, 643}) and (rate['currencyCodeB'] == 980):
+                if rate['currencyCodeA'] == 840:
+                    currency = mch.CURR_USD
+                elif rate['currencyCodeA'] == 978:
+                    currency = mch.CURR_EUR
+                elif rate['currencyCodeA'] == 643:
+                    currency = mch.CURR_RUB
+
                 rate_kwargs = {
                     'currency': currency,
-                    'buy': Decimal(str(round(rate['rateBuy'], 2))),
-                    'sale': Decimal(str(round(rate['rateSell'], 2))),
+                    'buy': Decimal(str(round(rate['rateBuy'], 3))),
+                    'sale': Decimal(str(round(rate['rateSell'], 3))),
                     'source': mch.SR_MONO
                 }
+
                 new_rate = Rate(**rate_kwargs)
                 last_rate = Rate.objects.filter(currency=currency, source=mch.SR_MONO).last()
                 save_rate(last_rate, new_rate)
@@ -58,11 +71,12 @@ def _vkurse():
     r_json = response.json()
 
     for curr in r_json:
-        if curr in {'Dollar', 'Euro'}:
             if curr == 'Dollar':
                 currency = mch.CURR_USD
-            else:
+            elif curr == 'Euro':
                 currency = mch.CURR_EUR
+            else:
+                currency = mch.CURR_RUB
 
             buy = r_json[curr]['buy'].replace(',', '.')
             sale = r_json[curr]['sale'].replace(',', '.')
@@ -84,6 +98,7 @@ def _otp():
     soup = bs(response.content, 'html.parser')
     currency_block = soup.find('tbody', class_='currency-list__body')
     currency_block = currency_block.select("tbody tr")
+
     for tr_tag in currency_block:
         curr = tr_tag.find('td', class_='currency-list__type').text
         if curr in {'USD', 'EUR'}:
@@ -100,6 +115,7 @@ def _otp():
                 'sale': Decimal(values[1].text),
                 'source': mch.SR_OTP
             }
+
             new_rate = Rate(**rate_kwargs)
             last_rate = Rate.objects.filter(currency=currency, source=mch.SR_OTP).last()
             save_rate(last_rate, new_rate)
@@ -110,13 +126,15 @@ def _pumb():
     soup = bs(response.content, 'html.parser')
     currency_block = soup.find('div', class_='exchange-rate')
     currency_block = currency_block.select("table tr")
-    target_blocks = [currency_block[1], currency_block[2]]
+    target_blocks = [currency_block[1], currency_block[2], currency_block[3]]
 
     for block in target_blocks:
         if block.text.strip().split('\n')[0] == 'USD':
             currency = mch.CURR_USD
-        else:
+        elif block.text.strip().split('\n')[0] == 'EUR':
             currency = mch.CURR_EUR
+        else:
+            currency = mch.CURR_RUB
 
         block = block.find_all('td')
         sale = block[1].text
@@ -131,22 +149,28 @@ def _pumb():
 
         new_rate = Rate(**rate_kwargs)
         last_rate = Rate.objects.filter(currency=currency, source=mch.SR_PUMB).last()
+
         save_rate(last_rate, new_rate)
 
 def _oshchad():
     url = 'https://www.oschadbank.ua/ua'
     response = requests.get(url)
     soup = bs(response.content, 'html.parser')
-    currs = {'USD', 'EUR'}
+    currs = {'USD', 'EUR', 'RUB'}
+
     for i in currs:
         if i == 'USD':
             currency = mch.CURR_USD
             buy = soup.find('strong', class_='buy-USD').text.strip()
             sale = soup.find('strong', class_='sell-USD').text.strip()
-        else:
+        elif i == 'EUR':
             currency = mch.CURR_EUR
             buy = soup.find('strong', class_='buy-EUR').text.strip()
             sale = soup.find('strong', class_='sell-EUR').text.strip()
+        else:
+            currency = mch.CURR_RUB
+            buy = soup.find('strong', class_='buy-RUB').text.strip()
+            sale = soup.find('strong', class_='sell-RUB').text.strip()
 
         rate_kwargs = {
             'currency': currency,
@@ -154,8 +178,10 @@ def _oshchad():
             'sale': Decimal(sale),
             'source': mch.SR_OSHCHAD
         }
+
         new_rate = Rate(**rate_kwargs)
         last_rate = Rate.objects.filter(currency=currency, source=mch.SR_OSHCHAD).last()
+
         save_rate(last_rate, new_rate)
 
 
@@ -187,10 +213,18 @@ def parse_archive_rates(self):
                         sale = rate['saleRate'],
                         source = mch.SR_PRIVAT
                     )
-                if rate['currency'] == 'EUR':
+                elif rate['currency'] == 'EUR':
                     Rate.objects.create(
                         created=str(date.date()),
                         currency=mch.CURR_EUR,
+                        buy=rate['purchaseRate'],
+                        sale=rate['saleRate'],
+                        source=mch.SR_PRIVAT
+                    )
+                elif rate['currency'] == 'RUR':
+                    Rate.objects.create(
+                        created=str(date.date()),
+                        currency=mch.CURR_RUB,
                         buy=rate['purchaseRate'],
                         sale=rate['saleRate'],
                         source=mch.SR_PRIVAT
