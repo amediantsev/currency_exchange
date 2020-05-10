@@ -3,7 +3,7 @@ import os
 
 from celery import shared_task
 from django.core.mail import send_mail
-from django.urls import reverse
+from django.urls import reverse_lazy
 
 
 @shared_task
@@ -13,7 +13,7 @@ def send_email_async(subject, message, email_from, recipient_list):
 
 @shared_task
 def send_activation_code_async(email_to, code):
-    path = reverse('account:activate', args=(code, ))
+    path = reverse_lazy('account:activate', args=(code, ))
     send_mail('Your activation code',
               f'134.122.114.146{path}',
               'testtestapp454545@gmail.com',
