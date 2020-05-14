@@ -34,8 +34,25 @@ Sign Up
         </div>
     </div>
     {%csrf_token%}
-    <button type="submit"  class="btn btn-dark col-sm-6 col-md-5 col-lg-4 mt-5 mx-auto d-block">Sign Up</button>
+
+    <div class="g-recaptcha col-sm-6 col-md-5 col-lg-4 mt-5 mx-auto d-block"
+    data-sitekey="{{ GOOGLE_RECAPTCHA_SITE_KEY }}"></div>
+
+    <button type="submit" class="btn btn-dark col-sm-6 col-md-5 col-lg-4 mt-5 mx-auto d-block">Sign Up</button>
 </form>
+
+
+<!-- Script for captcha -->
+<script src="https://www.google.com/recaptcha/api.js"></script>
+
+<script>
+    grecaptcha.ready(function() {
+        grecaptcha.execute('{GOOGLE_RECAPTCHA_SITE_KEY}', {action: 'signup'})
+        .then(function(token) {
+            document.getElementById("form").appendChild(document.CreateElement(`<input type="hidden" name="g-recaptcha-response" value=${token}`);
+        });
+    });
+</script>
 
 {% endblock content%}
 

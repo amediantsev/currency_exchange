@@ -229,3 +229,4 @@ def parse_archive_rates(self):
                         sale=rate['saleRate'],
                         source=mch.SR_PRIVAT
                     )
+ 

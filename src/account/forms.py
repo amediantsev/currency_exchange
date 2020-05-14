@@ -15,6 +15,7 @@ class SignUpForm(forms.ModelForm):
         model = models.User
         fields = ('email', 'first_name', 'last_name', 'username', 'password', 'password2', 'phone')
 
+
     def clean(self):
         cleaned_data = super().clean()
         if not self.errors:
