@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     'django_filters',
     'crispy_forms',
     'compressor',
+    'django_twilio',
+    'g_recaptcha',
 
     'account',
     'currency',
