@@ -1,12 +1,45 @@
-from django.http import Http404
+import urllib
+import json
+import requests
+
+from django.contrib import messages
+from django.conf import settings
+from django.http import Http404, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
+from g_recaptcha.validate_recaptcha import validate_captcha
 
 from account.forms import SignUpForm, ActivateForm, SignUpSMSForm
 from account.models import User, Contact, ActivationCode, SmsCode
 from account.tasks import send_email_async, send_tel_message
-from currency_exchange import settings
+
+
+# def is_recaptcha_valid(request):
+#     """
+#     Verify if the response for the Google recaptcha is valid.
+#     """
+#     return requests.post(
+#         settings.GOOGLE_VERIFY_RECAPTCHA_URL,
+#         data={
+#             'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+#             'response': request.POST.get('g-recaptcha-response'),
+#             'remoteip': get_client_ip(request)
+#         },
+#         verify=True
+#     ).json().get("success", False)
+
+    
+
+# class AjaxFormMixin(FormView):
+
+    # def form_valid(self, form):
+    #     form.save()
+    #     return super().form_valid(form)
+
+    # def form_invalid(self, form):
+    #     errors_dict = json.dumps(dict([(k, [e for e in v]) for k, v in form.errors.items()]))
+    #     return HttpResponseBadRequest(json.dumps(errors_dict))
 
 
 class SignUpIndex(generic.TemplateView):
@@ -19,6 +52,86 @@ class SignUp(generic.CreateView):
     form_class = SignUpForm
     success_url = reverse_lazy('login')
 
+    # def get_client_ip(self, request):
+    #     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    #     if x_forwarded_for:
+    #         ip = x_forwarded_for.split(',')[-1].strip()
+    #     else:
+    #         ip = request.META.get('REMOTE_ADDR')
+
+    #     return ip
+
+    # # def is_recaptcha_valid(self, request):
+    # #     """
+    # #     Verify if the response for the Google recaptcha is valid.
+    # #     """
+    # #     response = {}
+    # #     data = request.POST
+    # #     captcha_rs = data.get('g-recaptcha-response')
+    # #     url = "https://www.google.com/recaptcha/api/siteverify"
+    # #     params = {
+    # #         'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+    # #         'response': captcha_rs,
+    # #         'remoteip': self.get_client_ip(request)
+    # #     }
+    # #     verify_rs = requests.get(url, params=params, verify=True)
+    # #     verify_rs = verify_rs.json()
+    # #     response["status"] = verify_rs.get("success", False)
+        
+    # #     return response["status"]
+
+
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['GOOGLE_RECAPTCHA_SITE_KEY'] = settings.GOOGLE_RECAPTCHA_SITE_KEY
+
+        return context
+    
+    # def post(self, request, *args, **kwargs):
+    #     if not self.is_recaptcha_valid(request):
+    #         return super().form_invalid(form)
+
+    #     return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+
+        # get the token submitted in the form
+        recaptcha_response = self.request.POST.get('g-recaptcha-response')
+        url = 'https://www.google.com/recaptcha/api/siteverify'
+        payload = {
+            'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+            'response': recaptcha_response
+        }
+        data = urllib.parse.urlencode(payload).encode()
+        req = urllib.request.Request(url, data=data)
+
+        # verify the token submitted with the form is valid
+        response = urllib.request.urlopen(req)
+        result = json.loads(response.read().decode())
+
+        # result will be a dict containing 'success' and 'action'.
+        # it is important to verify both
+
+        if (not result['success']) or (not result['action'] == 'signup'):  # make sure action matches the one from your template
+            messages.error(self.request, 'Invalid reCAPTCHA. Please try again.')
+            return super().form_invalid(form)
+
+        return super().form_valid(form)
+
+
+    # def form_invalid(self, form):
+    #     """If the form is invalid, render the invalid form."""
+    #     return self.render_to_response(self.get_context_data(form=form))
+
+    # def form_valid(self, form):
+    #     form.save()
+    #     return super().form_valid(form)
+
+    # def form_invalid(self, form):
+    #     errors_dict = json.dumps(dict([(k, [e for e in v]) for k, v in form.errors.items()]))
+    #     return HttpResponseBadRequest(json.dumps(errors_dict))
+
 
 class SignUpSMS(SignUp):
     form_class = SignUpSMSForm
@@ -27,6 +140,7 @@ class SignUpSMS(SignUp):
     def get_success_url(self):
         self.request.session['user_id'] = self.object.id
         return super().get_success_url()
+
 
 
 class MyProfile(generic.UpdateView):
