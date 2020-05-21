@@ -5,6 +5,7 @@ from account import models
 
 class SignUpForm(forms.ModelForm):
 
+    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Username'}))
     password = forms.CharField(widget=forms.PasswordInput())
     password2 = forms.CharField(widget=forms.PasswordInput())
     email = forms.EmailField(required=True)

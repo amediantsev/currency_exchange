@@ -8,7 +8,6 @@ Contact us
 {% if user.is_authenticated %}
 
 <form method = "post">
-    {% csrf_token %}
     <h2 class="text-center">Contact us</h2>
     <div>
         <div class="col-6 p-0 mx-auto col-sm-6 col-md-5 col-lg-4">
@@ -20,6 +19,7 @@ Contact us
     </div>
     <button type="submit"  class="btn btn-dark col-sm-6 col-md-5 col-lg-4 mt-5 mx-auto d-block">Send email</button>
 </form>
+{% csrf_token %}
 {% else %}
 <p>
   Sorry, you can't contact us until you are logged in.
