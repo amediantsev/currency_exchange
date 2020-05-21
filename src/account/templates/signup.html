@@ -8,7 +8,8 @@ Sign Up
 
 {% load crispy_forms_tags %}
 
-<form method = "post">
+
+<form method="post">
     <h2 class="text-center">Sign Up</h2>
     <div>
         <div class="col-6 p-0 mx-auto col-sm-6 col-md-5 col-lg-4">
@@ -34,25 +35,48 @@ Sign Up
         </div>
     </div>
     {%csrf_token%}
-
-    <div class="g-recaptcha col-sm-6 col-md-5 col-lg-4 mt-5 mx-auto d-block"
-    data-sitekey="{{ GOOGLE_RECAPTCHA_SITE_KEY }}"></div>
+    
+    <div
+    class="g-recaptcha col-sm-6 col-md-5 col-lg-4 mt-5 mx-auto d-block"
+    data-sitekey="{{ GOOGLE_RECAPTCHA_SITE_KEY }}">
+    </div>
+    
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }} col-sm-6 col-md-5 col-lg-4 mt-5 mx-auto d-block"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
     <button type="submit" class="btn btn-dark col-sm-6 col-md-5 col-lg-4 mt-5 mx-auto d-block">Sign Up</button>
+
 </form>
 
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
-<!-- Script for captcha -->
-<script src="https://www.google.com/recaptcha/api.js"></script>
+<!-- 
+<script>
+    function onSubmit(token) {
+        document.getElementById("form").submit();
+    }
+</script>
+
+<div
+    class="g-recaptcha" 
+    data-sitekey="{{ GOOGLE_RECAPTCHA_SITE_KEY }}" 
+    data-callback='onSubmit' 
+    data-action='submit'>Submit
+</div>
 
 <script>
     grecaptcha.ready(function() {
-        grecaptcha.execute('{GOOGLE_RECAPTCHA_SITE_KEY}', {action: 'signup'})
+        grecaptcha.execute('{{ GOOGLE_RECAPTCHA_SITE_KEY }}', {action: {% url 'account:signup' %}})
         .then(function(token) {
             document.getElementById("form").appendChild(document.CreateElement(`<input type="hidden" name="g-recaptcha-response" value=${token}`);
         });
     });
 </script>
-
+ -->
 {% endblock content%}
 
