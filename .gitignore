@@ -132,6 +132,6 @@ settings_local.py
 settings_local.dev.py
 .idea
 !.gitkeep
-/run
-/static_content
-/node_modules
+run/
+static_content/
+node_modules/
