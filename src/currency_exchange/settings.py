@@ -21,6 +21,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+
+    # 'django_gulp',
+
     'django.contrib.staticfiles',
 
     'django_extensions',
@@ -277,6 +280,8 @@ SWAGGER_SETTINGS = {
 }
 
 CACHE_RATES_TIMEOUT = 60 * 15    # 15 minutes
+
+# GULP_CWD = os.path.join(STATIC_ROOT, "ln")
 
 try:
     from currency_exchange.settings_local import * #noqa
