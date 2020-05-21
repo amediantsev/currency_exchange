@@ -4,13 +4,11 @@ from datetime import timedelta
 from django.urls import reverse_lazy
 from celery.schedules import crontab
 
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'qkngi6q!7y74@lht)x2ivvzcd%^s@g0@_j$^78%$#nft828#dj'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
@@ -21,8 +19,6 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-
-    # 'django_gulp',
 
     'django.contrib.staticfiles',
 
@@ -281,7 +277,6 @@ SWAGGER_SETTINGS = {
 
 CACHE_RATES_TIMEOUT = 60 * 15    # 15 minutes
 
-# GULP_CWD = os.path.join(STATIC_ROOT, "ln")
 
 try:
     from currency_exchange.settings_local import * #noqa
