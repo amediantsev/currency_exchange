@@ -7,7 +7,6 @@ from celery.schedules import crontab
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 SECRET_KEY = 'qkngi6q!7y74@lht)x2ivvzcd%^s@g0@_j$^78%$#nft828#dj'
 
 DEBUG = False
@@ -277,6 +276,7 @@ SWAGGER_SETTINGS = {
 }
 
 CACHE_RATES_TIMEOUT = 60 * 15    # 15 minutes
+
 
 try:
     from currency_exchange.settings_local import * #noqa
