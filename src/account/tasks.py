@@ -4,6 +4,9 @@ import os
 from celery import shared_task
 from django.core.mail import send_mail
 from django.urls import reverse_lazy
+from django.conf import settings
+
+from twilio.rest import Client
 
 
 @shared_task
@@ -24,7 +27,18 @@ def send_activation_code_async(email_to, code):
 
 @shared_task()
 def send_sms_code_async(phone, code):
-    print(phone, code)
+    account_sid = settings.TWILIO_ACCOUNT_SID
+    auth_token = settings.TWILIO_AUTH_TOKEN
+
+    client = Client(account_sid, auth_token)
+
+    client.messages.create(
+        body=f'Your sms code: {code}',
+        from_=settings.MY_PHONE_NUMBER,
+        to=phone
+    )
+
+    return 'successed!'
 
 
 @shared_task
