@@ -154,7 +154,7 @@ def _pumb():
 
 def _oshchad():
     url = 'https://www.oschadbank.ua/ua'
-    response = requests.get(url)
+    response = requests.get(url, verify=False)
     soup = bs(response.content, 'html.parser')
     currs = {'USD', 'EUR', 'RUB'}
 
@@ -199,7 +199,8 @@ def parse_rates(self):
 def parse_archive_rates(self):
     end_date = timezone.now().date()
     five_years = timezone.timedelta(days=(365*5 + 2)) # 2016 and 2020 - leap years
-    daterange = date_range(end_date - five_years, end_date)
+    start_date = end_date - five_years
+    daterange = date_range(start_date, end_date)
     for date in daterange:
         response = requests.get(f'https://api.privatbank.ua/p24api/exchange_rates?json&date={date.day}.{date.month}.{date.year}')
         r_json = response.json()
