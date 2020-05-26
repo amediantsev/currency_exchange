@@ -194,9 +194,56 @@ a:hover, a:focus, a:active {
   justify-content: start;
   align-items: center;
   border-radius: 5px;
-  background: linear-gradient(#FF9600, #2D2D2D);
+  background: linear-gradient(#fff, #000);
 }
 
 .wrapper div:hover {
-  background: linear-gradient(#2D2D2D, #FF9600);
+  background: linear-gradient(#000, #fff);
+}
+
+.exchanger {
+  display: flex;
+  flex-direction: column;
+  /*max-width: 650px;*/
+  /*width: 50vw;*/
+}
+
+.exchanger > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px;
+  margin: 10px;
+  border-radius: 5px;
+  background: linear-gradient(#000, #131415);
+}
+
+.exchanger h2 {
+  color: #fff;
+  padding-right: 20px; 
+}
+
+.exchanger p {
+  color: #fff; 
+}
+
+.d33 {
+width: 400px; 
+height: 130px; 
+margin-left: 12px;
+background: #B5DDD4;
+position: relative;
+border-radius: 10px;
+}
+
+.d33:before {
+content: "";
+width: 0; 
+height: 0;
+position: absolute; 
+right: 100%; 
+top: calc(50% - 12px);
+border-top: 12px solid transparent;
+border-right: 24px solid #B5DDD4;
+border-bottom: 12px solid transparent;
 }
