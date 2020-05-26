@@ -194,10 +194,9 @@ a:hover, a:focus, a:active {
   justify-content: start;
   align-items: center;
   border-radius: 5px;
-  background: linear-gradient(#e66465, #9198e5);
+  background: linear-gradient(#fff, #fff);
 }
 
-/*.wrapper div:hover {
-  background: linear-gradient(#9198e5, #e66465);
+.wrapper div:hover {
+  background: linear-gradient(#fff, #fff);
 }
-*/
