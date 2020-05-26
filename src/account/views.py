@@ -12,22 +12,6 @@ from django.views import generic
 from account.forms import SignUpForm, ActivateForm, SignUpSMSForm
 from account.models import User, Contact, ActivationCode, SmsCode
 from account.tasks import send_email_async, send_tel_message
-
-
-# def is_recaptcha_valid(request):
-#     """
-#     Verify if the response for the Google recaptcha is valid.
-#     """
-#     return requests.post(
-#         settings.GOOGLE_VERIFY_RECAPTCHA_URL,
-#         data={
-#             'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
-#             'response': request.POST.get('g-recaptcha-response'),
-#             'remoteip': get_client_ip(request)
-#         },
-#         verify=True
-#     ).json().get("success", False)
-
     
 
 # class AjaxFormMixin(FormView):
@@ -51,13 +35,11 @@ class SignUp(generic.CreateView):
     form_class = SignUpForm
     success_url = reverse_lazy('login')
 
-
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['GOOGLE_RECAPTCHA_SITE_KEY'] = settings.GOOGLE_RECAPTCHA_SITE_KEY
 
         return context
-
 
     def form_valid(self, form):
 
@@ -76,7 +58,6 @@ class SignUp(generic.CreateView):
         result = json.loads(response.read().decode())
 
         if not result['success']:
-            # messages.error(self.request, 'idi nahuy')
             messages.add_message(self.request, messages.ERROR, 'Invalid Captcha. Please, try again')
             return super().form_invalid(form)
 
@@ -88,9 +69,7 @@ class SignUpSMS(SignUp):
     success_url = reverse_lazy('account:sms-activate')
 
     def get_success_url(self):
-        self.request.session['user_id'] = self.object.id
         return super().get_success_url()
-
 
 
 class MyProfile(generic.UpdateView):

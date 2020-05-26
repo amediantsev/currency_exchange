@@ -3,8 +3,10 @@ from django.utils import timezone
 from uuid import uuid4
 
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext
+from twilio.rest import Client
 
 from account.tasks import send_activation_code_async, send_sms_code_async
 
@@ -78,7 +80,9 @@ class SmsCode(models.Model):
         return diff.days > 7
 
     def send_sms_code(self):
-        send_sms_code_async.delay(self.user.phone, self.code)
-
+        send_sms_code_async.delay(
+            phone=self.user.phone,
+            code = self.code
+            )
 
 import account.signals
