@@ -1,6 +1,5 @@
 import urllib
 import json
-import requests
 
 from django.contrib import messages
 from django.conf import settings
@@ -12,7 +11,7 @@ from django.views import generic
 from account.forms import SignUpForm, ActivateForm, SignUpSMSForm
 from account.models import User, Contact, ActivationCode, SmsCode
 from account.tasks import send_email_async, send_tel_message
-    
+
 
 # class AjaxFormMixin(FormView):
 
@@ -97,12 +96,12 @@ class ContactUs(generic.CreateView):
         '\n\n' + \
         '*' * 100 + \
         f'\n\nWas sent from user {self.request.user} with email {self.request.user.email}'
-        
+
         email_from = settings.EMAIL_HOST_USER
         recipient_list = [settings.EMAIL_HOST_USER]
-        
+
         send_email_async.delay(subject=subject, message=message, email_from=email_from, recipient_list=recipient_list)
-        
+
         return super().form_valid(form)
 
 
@@ -154,5 +153,5 @@ class SMSActivate(generic.FormView):
         user.save(update_fields=['is_active'])
 
         send_tel_message(user=user)
-        
+
         return redirect('index')

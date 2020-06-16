@@ -175,6 +175,10 @@ a:hover, a:focus, a:active {
   color: #824027;
 }
 
+.main-title {
+  color: #fff;
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -231,9 +235,10 @@ a:hover, a:focus, a:active {
   width: 500px;
   height: 130px;
   margin-left: 6px;
-  background: #B5DDD4;
+  background: #BD5D38;
   position: relative;
   border-radius: 10px;
+  padding: 5px;
 }
 
 .d33:before {
@@ -244,20 +249,36 @@ a:hover, a:focus, a:active {
   right: 100%;
   top: 9px;
   border-top: 12px solid transparent;
-  border-right: 24px solid #B5DDD4;
+  border-right: 24px solid #BD5D38;
   border-bottom: 12px solid transparent;
 }
 
-.form-div {
+.d33__content {
   height: 100%;
 }
 
-.form__block {
+.d33__form {
   display: flex;
-  justify-content: center;
   align-items: flex-end;
+  justify-content: space_around;
+  height: 100%
 }
 
-.comment-block input{
-  width: 250px;
+.d33__input {
+  width: 100%;
+  color: #000;
+  content-color: #000;
+  border-radius: 5px;
+}
+
+.d33__button {
+  margin-left: 5px;
+  border-radius: 3px;
+  border: 2px solid #000;
+  background: #000;
+  color: #fff;
+}
+
+.source__img {
+  border-radius: 10px;
 }

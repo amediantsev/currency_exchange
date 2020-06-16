@@ -36,9 +36,16 @@
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
 
-    <img src="/media/logos/Logo.jpg" alt="" height="240" width="190">
-    
     <a class="navbar-brand js-scroll-trigger" href="{% url 'index' %}">
+        <img src="/media/logos/green.png" alt="" height="180" width="180">
+    </a>
+    <div>
+      <a class="navbar-brand js-scroll-trigger" href="{% url 'index' %}">
+        <h3 class="main-title">CURRENCY EXCHANGE</h3>
+      </a>
+    </div>
+
+    <a class="navbar-brand js-scroll-trigger" href="{% url 'account:my-profile' pk=request.user.id %}">
       {% if request.user.is_authenticated and request.user.avatar %}
       <span class="d-none d-lg-block">
         <img class="img-fluid img-profile rounded-circle mx-auto mb-2"

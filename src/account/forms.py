@@ -51,3 +51,7 @@ class SignUpSMSForm(SignUpForm):
 class ActivateForm(forms.Form):
     sms_code = forms.CharField()
 
+
+# class CommentForm(forms.ModelForm):
+#     text = forms.Textarea()
+
