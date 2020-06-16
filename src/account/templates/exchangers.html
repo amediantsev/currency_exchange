@@ -49,7 +49,17 @@ Exchangers list
 	</div>
 	<div>
 	  <h2>ОщадБанк</h2>
-	  <!-- <div class="d33"></div> -->
+	  <div class="d33">
+		  <div class="form-div">
+			  <form class="form__block">
+				  <div class="comment-block">
+					  <label>Comment: </label>
+					  <input type="text" placeholder="Leave your comment here...">
+					  <button type="submit">Submit</button>
+				  </div>
+			  </form>
+		  </div>
+	  </div>
 	  <div>
 	  	{% for rate in rates_oshchad %}
 	    <p>{{ rate.get_currency_display }}: {{ rate.buy }}  {{ rate.sale }}</p>

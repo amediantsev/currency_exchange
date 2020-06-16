@@ -95,7 +95,7 @@ class LatestRates(generic.TemplateView):
         return context
 
 
-class Exchangers(LatestRates):
+class Exchangers(generic.TemplateView):
     template_name = 'exchangers.html'
 
     def get_context_data(self, *args, **kwargs):        
@@ -103,7 +103,7 @@ class Exchangers(LatestRates):
         
         rates_privat = []
         for curr in mch.CURRENCY_CHOICES:
-            rates_privat.append(Rate.objects.filter(source=mch.SR_MONO, currency=curr[0]).last())
+            rates_privat.append(Rate.objects.filter(source=mch.SR_PRIVAT, currency=curr[0]).last())
 
         rates_mono = []
         for curr in mch.CURRENCY_CHOICES:
