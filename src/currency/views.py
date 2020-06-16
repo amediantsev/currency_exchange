@@ -93,3 +93,46 @@ class LatestRates(generic.TemplateView):
 
         context['rates'] = rates
         return context
+
+
+class Exchangers(generic.TemplateView):
+    template_name = 'exchangers.html'
+
+    def get_context_data(self, *args, **kwargs):        
+        context = super().get_context_data()
+        
+        rates_privat = []
+        for curr in mch.CURRENCY_CHOICES:
+            rates_privat.append(Rate.objects.filter(source=mch.SR_PRIVAT, currency=curr[0]).last())
+
+        rates_mono = []
+        for curr in mch.CURRENCY_CHOICES:
+            rates_mono.append(Rate.objects.filter(source=mch.SR_MONO, currency=curr[0]).last())
+
+        rates_vkurse = []
+        for curr in mch.CURRENCY_CHOICES:
+            rates_vkurse.append(Rate.objects.filter(source=mch.SR_VKURSE, currency=curr[0]).last())
+
+        rates_otp = []
+        for curr in (mch.CURRENCY_CHOICES[0], mch.CURRENCY_CHOICES[1]):
+            rates_otp.append(Rate.objects.filter(source=mch.SR_OTP, currency=curr[0]).last())
+
+        rates_pumb = []
+        for curr in mch.CURRENCY_CHOICES:
+            rates_pumb.append(Rate.objects.filter(source=mch.SR_PUMB, currency=curr[0]).last())
+
+        rates_oshchad = []
+        for curr in mch.CURRENCY_CHOICES:
+            rates_oshchad.append(Rate.objects.filter(source=mch.SR_OSHCHAD, currency=curr[0]).last())
+
+        context['rates_privat'] = rates_privat
+        context['rates_mono'] = rates_mono
+        context['rates_vkurse'] = rates_vkurse
+        context['rates_otp'] = rates_otp
+        context['rates_pumb'] = rates_pumb
+        context['rates_oshchad'] = rates_oshchad
+
+        return context
+
+
+

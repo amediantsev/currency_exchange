@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Exchangers list
+{% endblock title %}
+
+{% block content %}
+
+<div class="exchanger">
+	<div>
+	  <h2>PrivatBank</h2>
+	  <div>
+	    {% for rate in rates_privat %}
+	    <p>{{ rate.get_currency_display }}: {{ rate.buy }}  {{ rate.sale }}</p>
+	    {% endfor %}
+	  </div>
+	</div>
+	<div>
+	  <h2>MonoBank</h2>
+	  <div>
+	    {% for rate in rates_mono %}
+	    <p>{{ rate.get_currency_display }}: {{ rate.buy }}  {{ rate.sale }}</p>
+	    {% endfor %}
+	  </div>
+	</div>
+	<div>
+	  <h2>Vkurse</h2>
+	  <div>
+	  	{% for rate in rates_vkurse %}
+	    <p>{{ rate.get_currency_display }}: {{ rate.buy }}  {{ rate.sale }}</p>
+	    {% endfor %}
+	  </div>
+	</div>
+	<div>
+	  <h2>OTP</h2>
+	  <div>
+	    {% for rate in rates_otp %}
+	    <p>{{ rate.get_currency_display }}: {{ rate.buy }}  {{ rate.sale }}</p>
+	    {% endfor %}
+	  </div>
+	</div>
+	<div>
+	  <h2>PUMB</h2>
+	  <div>
+	    {% for rate in rates_pumb %}
+	    <p>{{ rate.get_currency_display }}: {{ rate.buy }}  {{ rate.sale }}</p>
+	    {% endfor %}
+	  </div>
+	</div>
+	<div>
+	  <h2>ОщадБанк</h2>
+	  <div class="d33">
+		  <div class="form-div">
+			  <form class="form__block">
+				  <div class="comment-block">
+					  <label>Comment: </label>
+					  <input type="text" placeholder="Leave your comment here...">
+					  <button type="submit">Submit</button>
+				  </div>
+			  </form>
+		  </div>
+	  </div>
+	  <div>
+	  	{% for rate in rates_oshchad %}
+	    <p>{{ rate.get_currency_display }}: {{ rate.buy }}  {{ rate.sale }}</p>
+	    <!-- <hr style="border-color: #fff;"> -->
+	    {% endfor %}
+	  </div>
+	</div>
+</div>
+
+{% endblock content %}
