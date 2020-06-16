@@ -9,6 +9,7 @@ from django.utils.translation import gettext
 from twilio.rest import Client
 
 from account.tasks import send_activation_code_async, send_sms_code_async
+import currency.model_choices as mch_currency
 
 
 def generate_sms_code():
@@ -21,8 +22,6 @@ def avatar_path(instance, filename):
     f = str(uuid4())
     filename = f'{f}.{ext}'
     return '/'.join(['avatar', str(instance.id), filename])
-
-
 
 
 class User(AbstractUser):
@@ -84,5 +83,18 @@ class SmsCode(models.Model):
             phone=self.user.phone,
             code = self.code
             )
+
+
+class Comment(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='authors')
+    source = models.PositiveSmallIntegerField(choices=mch_currency.SOURCE_CHOICES)
+    text = models.TextField(max_length=2000)
+
+    def __str__(self):
+        presentation = f'{self.get_source_display()} (by {self.author}): {self.text}'
+        if len(self.text) > 20:
+            return f'{self.get_source_display()} (by {self.author}): {self.text[0:30]}...'
+        return presentation
+
 
 import account.signals

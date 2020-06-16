@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
 Exchangers list
@@ -8,7 +9,24 @@ Exchangers list
 
 <div class="exchanger">
 	<div>
-	  <h2>PrivatBank</h2>
+		<img class="source__img" src="/media/logos/privat.png" alt="" width="360" height="130">
+		<div class="d33">
+		  <div class="d33__content">
+			<form action="{% url 'currency:comment-creation' pk=1 %}" method="post" class="d33__form" >
+			  {% csrf_token %}
+				<div class="d33__input">
+					{{ form }}
+				</div>
+				{% if request.user.is_authenticated %}
+				<div>
+					<button class="d33__button" type="submit">Send</button>
+				</div>
+				{% else %}
+				<span>Log in to leave a comment</span>
+				{% endif %}
+			</form>
+		  </div>
+		</div>
 	  <div>
 	    {% for rate in rates_privat %}
 	    <p>{{ rate.get_currency_display }}: {{ rate.buy }}  {{ rate.sale }}</p>
@@ -16,7 +34,24 @@ Exchangers list
 	  </div>
 	</div>
 	<div>
-	  <h2>MonoBank</h2>
+	  <img class="source__img" src="/media/logos/mono.png" alt="">
+		<div class="d33">
+		  <div class="d33__content">
+			<form action="{% url 'currency:comment-creation' pk=2 %}" method="post" class="d33__form" >
+			  {% csrf_token %}
+				<div class="d33__input">
+					{{ form }}
+				</div>
+				{% if request.user.is_authenticated %}
+				<div>
+					<button class="d33__button" type="submit">Send</button>
+				</div>
+				{% else %}
+				<span>Log in to leave a comment</span>
+				{% endif %}
+			</form>
+		  </div>
+		</div>
 	  <div>
 	    {% for rate in rates_mono %}
 	    <p>{{ rate.get_currency_display }}: {{ rate.buy }}  {{ rate.sale }}</p>
@@ -24,7 +59,24 @@ Exchangers list
 	  </div>
 	</div>
 	<div>
-	  <h2>Vkurse</h2>
+		<img class="source__img" src="/media/logos/vkurse.png" alt="">
+		<div class="d33">
+		  <div class="d33__content">
+			<form action="{% url 'currency:comment-creation' pk=3 %}" method="post" class="d33__form" >
+			  {% csrf_token %}
+				<div class="d33__input">
+					{{ form }}
+				</div>
+				{% if request.user.is_authenticated %}
+				<div>
+					<button class="d33__button" type="submit">Send</button>
+				</div>
+				{% else %}
+				<span>Log in to leave a comment</span>
+				{% endif %}
+			</form>
+		  </div>
+		</div>
 	  <div>
 	  	{% for rate in rates_vkurse %}
 	    <p>{{ rate.get_currency_display }}: {{ rate.buy }}  {{ rate.sale }}</p>
@@ -32,7 +84,24 @@ Exchangers list
 	  </div>
 	</div>
 	<div>
-	  <h2>OTP</h2>
+		<img class="source__img" src="/media/logos/otp.png" alt="">
+		<div class="d33">
+		  <div class="d33__content">
+			<form action="{% url 'currency:comment-creation' pk=4 %}" method="post" class="d33__form" >
+			  {% csrf_token %}
+				<div class="d33__input">
+					{{ form }}
+				</div>
+				{% if request.user.is_authenticated %}
+				<div>
+					<button class="d33__button" type="submit">Send</button>
+				</div>
+				{% else %}
+				<span>Log in to leave a comment</span>
+				{% endif %}
+			</form>
+		  </div>
+		</div>
 	  <div>
 	    {% for rate in rates_otp %}
 	    <p>{{ rate.get_currency_display }}: {{ rate.buy }}  {{ rate.sale }}</p>
@@ -40,7 +109,24 @@ Exchangers list
 	  </div>
 	</div>
 	<div>
-	  <h2>PUMB</h2>
+		<img class="source__img" src="/media/logos/pumb.png" alt="">
+		<div class="d33">
+		  <div class="d33__content">
+			<form action="{% url 'currency:comment-creation' pk=5 %}" method="post" class="d33__form" >
+			  {% csrf_token %}
+				<div class="d33__input">
+					{{ form }}
+				</div>
+				{% if request.user.is_authenticated %}
+				<div>
+					<button class="d33__button" type="submit">Send</button>
+				</div>
+				{% else %}
+				<span>Log in to leave a comment</span>
+				{% endif %}
+			</form>
+		  </div>
+		</div>
 	  <div>
 	    {% for rate in rates_pumb %}
 	    <p>{{ rate.get_currency_display }}: {{ rate.buy }}  {{ rate.sale }}</p>
@@ -48,24 +134,30 @@ Exchangers list
 	  </div>
 	</div>
 	<div>
-	  <h2>ОщадБанк</h2>
-	  <div class="d33">
-		  <div class="form-div">
-			  <form class="form__block">
-				  <div class="comment-block">
-					  <label>Comment: </label>
-					  <input type="text" placeholder="Leave your comment here...">
-					  <button type="submit">Submit</button>
-				  </div>
-			  </form>
+		<img class="source__img" src="/media/logos/oshchad.png" alt="">
+		<div class="d33">
+		  <div class="d33__content">
+			<form action="{% url 'currency:comment-creation' pk=6 %}" method="post" class="d33__form" >
+			  {% csrf_token %}
+				<div class="d33__input">
+					{{ form }}
+				</div>
+				{% if request.user.is_authenticated %}
+				<div>
+					<button class="d33__button" type="submit">Send</button>
+				</div>
+				{% else %}
+				<span>Log in to leave a comment</span>
+				{% endif %}
+			</form>
 		  </div>
-	  </div>
-	  <div>
+		</div>
+		<div>
 	  	{% for rate in rates_oshchad %}
 	    <p>{{ rate.get_currency_display }}: {{ rate.buy }}  {{ rate.sale }}</p>
 	    <!-- <hr style="border-color: #fff;"> -->
 	    {% endfor %}
-	  </div>
+		</div>
 	</div>
 </div>
 
