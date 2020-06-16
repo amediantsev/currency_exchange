@@ -213,9 +213,9 @@ a:hover, a:focus, a:active {
   justify-content: space-between;
   align-items: center;
   padding: 30px;
-  margin: 10px;
-  border-radius: 5px;
-  background: linear-gradient(#000, #131415);
+  margin: 8px;
+  border-radius: 15px;
+  background: linear-gradient(#000, #1B1B1B);
 }
 
 .exchanger h2 {
@@ -228,22 +228,36 @@ a:hover, a:focus, a:active {
 }
 
 .d33 {
-width: 400px; 
-height: 130px; 
-margin-left: 12px;
-background: #B5DDD4;
-position: relative;
-border-radius: 10px;
+  width: 500px;
+  height: 130px;
+  margin-left: 6px;
+  background: #B5DDD4;
+  position: relative;
+  border-radius: 10px;
 }
 
 .d33:before {
-content: "";
-width: 0; 
-height: 0;
-position: absolute; 
-right: 100%; 
-top: calc(50% - 12px);
-border-top: 12px solid transparent;
-border-right: 24px solid #B5DDD4;
-border-bottom: 12px solid transparent;
+  content: "";
+  width: 0;
+  height: 0;
+  position: absolute;
+  right: 100%;
+  top: 9px;
+  border-top: 12px solid transparent;
+  border-right: 24px solid #B5DDD4;
+  border-bottom: 12px solid transparent;
+}
+
+.form-div {
+  height: 100%;
+}
+
+.form__block {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.comment-block input{
+  width: 250px;
 }
