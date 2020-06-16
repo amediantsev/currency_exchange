@@ -1,24 +1,22 @@
-{% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 
+{% load static %}
 {% load compress %}
 
 <head>
 
-  {% compress css %}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  {% endcompress %}
 
   <title>
     {% block title %}
     {% endblock title %}
   </title>
 
+  {% compress css %}
   <!-- Bootstrap core CSS -->
   <link href="{% static 'ln/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
@@ -28,8 +26,8 @@
   <link href="{% static 'ln/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <!-- <link href="{% static 'ln/css/resume.min.css' %}" rel="stylesheet"> -->
   <link href="{% static 'ln/css/resume.css' %}" rel="stylesheet">
+  {% endcompress %}
 
 </head>
 
@@ -77,6 +75,9 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'currency:download-rates' %}">Download Rates</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'currency:exchangers' %}">Exchangers</a>
         </li>
 
       </ul>
