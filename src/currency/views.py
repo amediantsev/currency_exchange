@@ -3,10 +3,14 @@ from urllib.parse import urlencode
 
 from django.core.cache import cache
 from django.http import HttpResponse
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from django.views import generic
 from django_filters.views import FilterView
 
+from account.models import Comment
 from currency.filters import RateFilter
+from currency.forms import CommentForm
 from currency.models import Rate
 from currency import model_choices as mch
 from currency.utils import generate_rate_cache_key
@@ -95,8 +99,12 @@ class LatestRates(generic.TemplateView):
         return context
 
 
-class Exchangers(generic.TemplateView):
+class Exchangers(generic.FormView):
     template_name = 'exchangers.html'
+    queryset = Comment.objects.all()
+    success_url = reverse_lazy('account:exchangers')
+    model = Comment
+    form_class = CommentForm
 
     def get_context_data(self, *args, **kwargs):        
         context = super().get_context_data()
@@ -135,4 +143,10 @@ class Exchangers(generic.TemplateView):
         return context
 
 
-
+def comment_creation(request, pk):
+    Comment.objects.create(
+        author=request.user,
+        text=request.POST['text'],
+        source=pk
+    )
+    return redirect('currency:exchangers')
