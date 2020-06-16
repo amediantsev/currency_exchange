@@ -15,6 +15,4 @@ urlpatterns = [
 
     path('activate/<uuid:activation_code>/', views.Activate.as_view(), name='activate'),
     path('sms-activate/', views.SMSActivate.as_view(), name='sms-activate'),
-
-    path('comment-creation/<int:pk>', views.comment_creation, name='comment-creation'),
 ]
