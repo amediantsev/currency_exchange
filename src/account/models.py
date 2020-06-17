@@ -92,7 +92,7 @@ class Comment(models.Model):
 
     def __str__(self):
         presentation = f'{self.get_source_display()} (by {self.author}): {self.text}'
-        if len(self.text) > 20:
+        if len(self.text) > 30:
             return f'{self.get_source_display()} (by {self.author}): {self.text[0:30]}...'
         return presentation
 

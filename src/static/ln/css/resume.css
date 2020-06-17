@@ -208,8 +208,6 @@ a:hover, a:focus, a:active {
 .exchanger {
   display: flex;
   flex-direction: column;
-  /*max-width: 650px;*/
-  /*width: 50vw;*/
 }
 
 .exchanger > div {
