@@ -91,9 +91,9 @@ class Comment(models.Model):
     text = models.TextField(max_length=2000)
 
     def __str__(self):
-        presentation = f'{self.get_source_display()} (by {self.author}): {self.text}'
+        presentation = f'<{self.id}> {self.get_source_display()} (by {self.author}): {self.text}'
         if len(self.text) > 30:
-            return f'{self.get_source_display()} (by {self.author}): {self.text[0:30]}...'
+            return f'<{self.id} > {self.get_source_display()} (by {self.author}): {self.text[0:30]}...'
         return presentation
 
 
