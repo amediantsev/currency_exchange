@@ -67,9 +67,9 @@ class LatestRates(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context['rates'] = Rate.objects.filter(source=mch.SR_PRIVAT, currency=mch.CURR_USD).last()
+        # context['rates'] = Rate.objects.filter(source=mch.SR_PRIVAT, currency=mch.CURR_USD).last()
 
-        cache_key_base = 'latest-rates-{}-{}'
+        # cache_key_base = 'latest-rates-{}-{}'
 
 
         rates=[]
