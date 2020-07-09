@@ -8,11 +8,8 @@ from pandas import date_range
 
 from currency.models import Rate
 from currency import model_choices as mch
+from currency.utils import save_rate
 
-
-def save_rate(last_rate, new_rate):
-    if last_rate is None or (new_rate.buy != last_rate.buy or new_rate.sale != last_rate.sale):
-        new_rate.save()
 
 def _privat():
     url = 'https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5'
@@ -137,8 +134,8 @@ def _pumb():
             currency = mch.CURR_RUB
 
         block = block.find_all('td')
-        sale = block[1].text
-        buy = block[2].text
+        buy = block[1].text
+        sale = block[2].text
 
         rate_kwargs = {
             'currency': currency,
