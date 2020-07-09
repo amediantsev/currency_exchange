@@ -11,27 +11,51 @@ Exchangers list
 	<div>
 		<img class="source__img" src="/media/logos/privat.png" alt="" width="360" height="130">
 		<div class="d33">
-		  <div class="d33__content">
-			<form action="{% url 'currency:comment-creation' pk=1 %}" method="post" class="d33__form" >
-			  {% csrf_token %}
-				<div class="d33__input">
-					{{ form }}
-				</div>
-				{% if request.user.is_authenticated %}
+			<div class="d33__content">
 				<div>
-					<button class="d33__button" type="submit">Send</button>
+					<a href="{% url 'index' %}" class="d33__a__bank_info">Bank information &#128279;</a>
 				</div>
-				{% else %}
-				<span class="d33__span">Log in to leave a comment</span>
-				{% endif %}
-			</form>
-		  </div>
+				<div class="d33__last_comment_block">
+					<img class="d33__img__avatar" src="{{ last_comment_privat.author.avatar.url }}" alt="">
+					<div class="d33__div__last_comment">
+						<div class="d33__div__last_comment_header">
+							<span class="d33__span__last_comment">{{last_comment_privat.author}}:</span>
+								<a class="d33__span__last_comment" href="{% url 'index' %}">View all comments &#128279;</a>
+						</div>
+						<div class="d33__div__last_comment_text">
+							<span class="d33__span__last_comment">{{ last_comment_privat.short_text }}</span>
+						</div>
+					</div>
+				</div>
+				<div>
+					<form action="{% url 'currency:comment-creation' pk=1 %}" method="post" class="d33__form" >
+						{% csrf_token %}
+						{% if request.user.avatar %}
+						<div>
+							<img class="d33__img__avatar"
+								 src="{{ request.user.avatar.url }}"
+								 alt="">
+						</div>
+						{% endif %}
+						<div class="d33__input">
+							{{ form }}
+						</div>
+						{% if request.user.is_authenticated %}
+						<div>
+							<button class="d33__button" type="submit">Send</button>
+						</div>
+						{% else %}
+						<span class="d33__span__unregister">Log in to leave a comment</span>
+						{% endif %}
+					</form>
+				</div>
+			</div>
 		</div>
-	  <div>
-	    {% for rate in rates_privat %}
-	    <p>{{ rate.get_currency_display }}: {{ rate.buy }}  {{ rate.sale }}</p>
-	    {% endfor %}
-	  </div>
+		<div>
+			{% for rate in rates_privat %}
+			<p>{{ rate.get_currency_display }}: {{ rate.buy }}  {{ rate.sale }}</p>
+			{% endfor %}
+		</div>
 	</div>
 	<div>
 	  <img class="source__img" src="/media/logos/mono.png" alt="">

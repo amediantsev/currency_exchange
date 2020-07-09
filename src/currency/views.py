@@ -140,6 +140,31 @@ class Exchangers(generic.FormView):
         context['rates_pumb'] = rates_pumb
         context['rates_oshchad'] = rates_oshchad
 
+        try:
+            context['last_comment_privat'] = Comment.objects.filter(source=mch.SR_PRIVAT).last()
+        except:
+            context['last_comment_privat'] = 'No comments about this bank'
+
+        try:
+            context['last_comment_mono'] = Comment.objects.filter(source=mch.SR_MONO).last()
+        except:
+            context['last_comment_mono'] = 'No comments about this bank'
+
+        try:
+            context['last_comment_otp'] = Comment.objects.filter(source=mch.SR_OTP).last()
+        except:
+            context['last_comment_otp'] = 'No comments about this bank'
+
+        try:
+            context['last_comment_pumb'] = Comment.objects.filter(source=mch.SR_PUMB).last()
+        except:
+            context['last_comment_pumb'] = 'No comments about this bank'
+
+        try:
+            context['last_comment_oshchad'] = Comment.objects.filter(source=mch.SR_OSHCHAD).last()
+        except:
+            context['last_comment_oshchad'] = 'No comments about this bank'
+
         return context
 
 

@@ -89,12 +89,20 @@ class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='authors')
     source = models.PositiveSmallIntegerField(choices=mch_currency.SOURCE_CHOICES)
     text = models.TextField(max_length=2000)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         presentation = f'<{self.id}> {self.get_source_display()} (by {self.author}): {self.text}'
         if len(self.text) > 30:
             return f'<{self.id} > {self.get_source_display()} (by {self.author}): {self.text[0:30]}...'
         return presentation
+
+    @property
+    def short_text(self):
+        if len(self.text) > 50:
+            return f'{self.text[:50]}...'
+        else:
+            return self.text
 
 
 import account.signals

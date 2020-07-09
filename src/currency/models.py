@@ -2,6 +2,7 @@ from django.core.cache import cache
 from django.db import models
 from django.utils import timezone
 
+from account.models import Comment
 from currency import model_choices as mch
 from currency.utils import generate_rate_cache_key
 
