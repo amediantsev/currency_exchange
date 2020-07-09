@@ -15,6 +15,7 @@ Exchangers list
 				<div>
 					<a href="{% url 'index' %}" class="d33__a__bank_info">Bank information &#128279;</a>
 				</div>
+				<span style="color: #000">Last comment:</span>
 				<div class="d33__last_comment_block">
 					<img class="d33__img__avatar" src="{{ last_comment_privat.author.avatar.url }}" alt="">
 					<div class="d33__div__last_comment">
@@ -37,8 +38,11 @@ Exchangers list
 								 alt="">
 						</div>
 						{% endif %}
-						<div class="d33__input">
+						<div class="d33__comment_form">
+							<span style="color: #000">Your comment:</span>
+							<div class="d33__input">
 							{{ form }}
+							</div>
 						</div>
 						{% if request.user.is_authenticated %}
 						<div>

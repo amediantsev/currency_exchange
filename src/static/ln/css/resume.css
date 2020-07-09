@@ -231,7 +231,7 @@ a:hover, a:focus, a:active {
 
 .d33 {
   width: 500px;
-  height: 170px;
+  height: 200px;
   margin-left: 6px;
   background: #BD5D38;
   position: relative;
@@ -261,7 +261,12 @@ a:hover, a:focus, a:active {
 .d33__form {
   display: flex;
   align-items: flex-end;
+  justify-content: space-between;
   height: 100%
+}
+
+.d33__comment_form {
+  width: 100%;
 }
 
 .d33__input {

@@ -11,7 +11,7 @@ class CommentForm(forms.ModelForm):
         widget=forms.HiddenInput()
     )
     text = forms.CharField(
-        label='Comment',
+        label='',
         widget=forms.TextInput(
             attrs={
                 'class': 'd33__input',
