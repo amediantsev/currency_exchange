@@ -16,17 +16,6 @@ services:
     container_name: memcached
     restart: always
 
-  postgres:
-    image: postgres:11.3
-    restart: always
-    container_name: postgres
-    ports:
-      - "5432:5432"
-    env_file:
-      - .env
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-
   backend:
     build: .
     command: /bin/bash ./commands/wsgi/${SERVER}.sh
