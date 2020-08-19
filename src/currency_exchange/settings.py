@@ -77,11 +77,11 @@ WSGI_APPLICATION = 'currency_exchange.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ['POSTGRES_DB'],
-        'USER' : os.environ['POSTGRES_USER'],
-        'PASSWORD' : os.environ['POSTGRES_PASSWORD'],
-        'HOST' : os.environ['POSTGRES_HOST'],
-        'PORT' : os.environ['POSTGRES_PORT'],
+        'NAME': 'sbr_bd',
+        'USER' : 'sbr_user',
+        'PASSWORD' : 'hf0Uy84Omasr5p',
+        'HOST' : '192.168.0.9',
+        'PORT' : '5432',
     }
 }
 
