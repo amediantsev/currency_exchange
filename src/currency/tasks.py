@@ -36,6 +36,7 @@ def _privat():
             last_rate = Rate.objects.filter(currency=currency, source=mch.SR_PRIVAT).last()
             save_rate(last_rate, new_rate)
 
+
 def _mono():
     url = 'https://api.monobank.ua/bank/currency'
     response = requests.get(url)
@@ -61,6 +62,7 @@ def _mono():
                 new_rate = Rate(**rate_kwargs)
                 last_rate = Rate.objects.filter(currency=currency, source=mch.SR_MONO).last()
                 save_rate(last_rate, new_rate)
+
 
 def _vkurse():
     url = 'http://vkurse.dp.ua/course.json'
@@ -89,6 +91,7 @@ def _vkurse():
             last_rate = Rate.objects.filter(currency=currency, source=mch.SR_VKURSE).last()
             save_rate(last_rate, new_rate)
 
+
 def _otp():
     url = 'https://www.otpbank.com.ua/'
     response = requests.get(url)
@@ -116,6 +119,7 @@ def _otp():
             new_rate = Rate(**rate_kwargs)
             last_rate = Rate.objects.filter(currency=currency, source=mch.SR_OTP).last()
             save_rate(last_rate, new_rate)
+
 
 def _pumb():
     url = 'https://www.pumb.ua/'

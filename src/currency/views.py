@@ -140,30 +140,16 @@ class Exchangers(generic.FormView):
         context['rates_pumb'] = rates_pumb
         context['rates_oshchad'] = rates_oshchad
 
-        try:
-            context['last_comment_privat'] = Comment.objects.filter(source=mch.SR_PRIVAT).last()
-        except:
-            context['last_comment_privat'] = 'No comments about this bank'
+        form_comments_kwargs = [
+            {"context": context, "bank_name": "privat", "choice_id": mch.SR_PRIVAT},
+            {"context": context, "bank_name": "mono", "choice_id": mch.SR_MONO},
+            {"context": context, "bank_name": "otp", "choice_id": mch.SR_OTP},
+            {"context": context, "bank_name": "pumb", "choice_id": mch.SR_PUMB},
+            {"context": context, "bank_name": "oshchad", "choice_id": mch.SR_OSHCHAD}
+        ]
 
-        try:
-            context['last_comment_mono'] = Comment.objects.filter(source=mch.SR_MONO).last()
-        except:
-            context['last_comment_mono'] = 'No comments about this bank'
-
-        try:
-            context['last_comment_otp'] = Comment.objects.filter(source=mch.SR_OTP).last()
-        except:
-            context['last_comment_otp'] = 'No comments about this bank'
-
-        try:
-            context['last_comment_pumb'] = Comment.objects.filter(source=mch.SR_PUMB).last()
-        except:
-            context['last_comment_pumb'] = 'No comments about this bank'
-
-        try:
-            context['last_comment_oshchad'] = Comment.objects.filter(source=mch.SR_OSHCHAD).last()
-        except:
-            context['last_comment_oshchad'] = 'No comments about this bank'
+        for kwargs_dict in form_comments_kwargs:
+            form_comments(**kwargs_dict)
 
         return context
 
@@ -175,3 +161,10 @@ def comment_creation(request, pk):
         source=pk
     )
     return redirect('currency:exchangers')
+
+
+def form_comments(context, bank_name, choice_id, *args, **kwargs):
+    try:
+        context[f"last_comment_{bank_name}"] = Comment.objects.filter(source=choice_id).last()
+    except:
+        context[choice_id] = 'No comments about this bank'

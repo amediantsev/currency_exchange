@@ -3,10 +3,8 @@ from django.utils import timezone
 from uuid import uuid4
 
 from django.db import models
-from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext
-from twilio.rest import Client
 
 from account.tasks import send_activation_code_async, send_sms_code_async
 import currency.model_choices as mch_currency
@@ -79,10 +77,7 @@ class SmsCode(models.Model):
         return diff.days > 7
 
     def send_sms_code(self):
-        send_sms_code_async.delay(
-            phone=self.user.phone,
-            code = self.code
-            )
+        send_sms_code_async.delay(phone=self.user.phone, code=self.code)
 
 
 class Comment(models.Model):
@@ -92,9 +87,8 @@ class Comment(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        presentation = f'<{self.id}> {self.get_source_display()} (by {self.author}): {self.text}'
-        if len(self.text) > 30:
-            return f'<{self.id} > {self.get_source_display()} (by {self.author}): {self.text[0:30]}...'
+        presentation = f'<{self.id}> {self.get_source_display()} (by {self.author}): '
+        presentation += f"{self.text}" if len(self.text) <= 30 else f"{self.text[0:30]}..."
         return presentation
 
     @property
